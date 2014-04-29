@@ -62,7 +62,7 @@ public class HFT implements IConnectionHandler {
 			Thread.currentThread().interrupt();
 		}
 		
-		System.out.println("github test");
+		System.out.println("github test changed");
 		
 /*		// Create an Order
 		Order order = new Order();
