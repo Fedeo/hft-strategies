@@ -2,12 +2,12 @@ package com.hft.data.feed.ib;
 
 import java.util.ArrayList;
 
-import com.hft.adapter.ib.client.Contract;
 import com.hft.adapter.ib.controller.ApiController.IDeepMktDataHandler;
 import com.hft.adapter.ib.controller.NewContract;
 import com.hft.adapter.ib.controller.Types.DeepSide;
 import com.hft.adapter.ib.controller.Types.DeepType;
 import com.hft.connector.ib.IBConnection;
+import com.hft.data.IHftSecurity;
 import com.hft.data.feed.IDataFeed;
 import com.hft.order.book.BookItem;
 import com.hft.order.book.OrderBook;
@@ -62,17 +62,9 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 	}
 
 	@Override
-	public void requestMktData() {
-		// EURUSD
-		Contract c = new Contract();
-		c.m_symbol = "EUR";
-		c.m_exchange = "IDEALPRO";
-		c.m_currency = "USD";
-		c.m_secType = "CASH";
+	public void requestMktData(IHftSecurity security) {
 
-		// LUX.MI
-
-		NewContract contract = new NewContract(c);
+		NewContract contract = new NewContract(IBAdapter.convertSecurity(security));
 		BookResult resultHandler = new BookResult();
 
 		apiController.reqDeepMktData(contract, 5, resultHandler);
