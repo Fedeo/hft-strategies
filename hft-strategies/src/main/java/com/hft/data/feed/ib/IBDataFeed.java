@@ -10,12 +10,12 @@ import com.hft.connector.ib.IBConnection;
 import com.hft.data.IHftSecurity;
 import com.hft.data.feed.IDataFeed;
 import com.hft.order.book.BookItem;
-import com.hft.order.book.OrderBook;
+import com.hft.order.book.OrderBookController;
 
 public class IBDataFeed extends IBConnection implements IDataFeed {
 
 	public IBDataFeed() {
-		super.connect();
+		connect();
 	}
 
 	@Override
@@ -59,40 +59,44 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 
 	@Override
 	public void disconnect() {
+		super.disconnect();
 	}
 
 	@Override
 	public void requestMktData(IHftSecurity security) {
 
 		NewContract contract = new NewContract(IBAdapter.convertSecurity(security));
-		BookResult resultHandler = new BookResult();
+		BookResult resultHandler = new BookResult(security);
 
 		apiController.reqDeepMktData(contract, 5, resultHandler);
 	}
 
-	private static class BookResult implements IDeepMktDataHandler {
+	private class BookResult implements IDeepMktDataHandler {
 
-		static int index = 0;
+		private int orderBookKey;
+
+		public BookResult(IHftSecurity security) {
+			this.orderBookKey = security.hashCode();
+			System.out.println("registering request for " + orderBookKey);
+		}
 
 		@Override
 		public void updateMktDepth(int position, String marketMaker, DeepType operation, DeepSide side, double price,
 				int size) {
-			// System.out.println(position + " " + marketMaker + " " + operation
-			// + " " + side + " " + price + " " + size);
-			System.out.println(index++);
+			System.out.println("Getting feedback for " + orderBookKey + " " + position + " " + price);
 			// Update del Book
 			BookItem bookItem = new BookItem(size, price);
 			if (operation == DeepType.INSERT) {
 				if (side == DeepSide.BUY) {
-					OrderBook.getInstance().addAsk(bookItem, position);
+					OrderBookController.getOrderBook(orderBookKey).addAsk(bookItem, position);
 				} else {
-					OrderBook.getInstance().addBid(bookItem, position);
+					OrderBookController.getOrderBook(orderBookKey).addBid(bookItem, position);
 				}
 			} else if (operation == DeepType.UPDATE) {
 				if (side == DeepSide.BUY) {
-					OrderBook.getInstance().addAsk(bookItem, position);
+					OrderBookController.getOrderBook(orderBookKey).addAsk(bookItem, position);
 				} else {
-					OrderBook.getInstance().addBid(bookItem, position);
+					OrderBookController.getOrderBook(orderBookKey).addBid(bookItem, position);
 				}
 			}
 		}

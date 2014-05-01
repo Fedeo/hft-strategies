@@ -55,6 +55,49 @@ public class HftCurrencyPair implements IHftSecurity {
 		this.secType = secType;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((currency == null) ? 0 : currency.hashCode());
+		result = prime * result + ((exchange == null) ? 0 : exchange.hashCode());
+		result = prime * result + ((secType == null) ? 0 : secType.hashCode());
+		result = prime * result + ((symbol == null) ? 0 : symbol.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HftCurrencyPair other = (HftCurrencyPair) obj;
+		if (currency == null) {
+			if (other.currency != null)
+				return false;
+		} else if (!currency.equals(other.currency))
+			return false;
+		if (exchange == null) {
+			if (other.exchange != null)
+				return false;
+		} else if (!exchange.equals(other.exchange))
+			return false;
+		if (secType == null) {
+			if (other.secType != null)
+				return false;
+		} else if (!secType.equals(other.secType))
+			return false;
+		if (symbol == null) {
+			if (other.symbol != null)
+				return false;
+		} else if (!symbol.equals(other.symbol))
+			return false;
+		return true;
+	}
+
 
 	
 	

@@ -17,5 +17,7 @@ public interface IHftSecurity {
 	public abstract void setSymbol(String symbol);
 
 	public abstract String getSymbol();
+	
+	public abstract int hashCode();
 
 }

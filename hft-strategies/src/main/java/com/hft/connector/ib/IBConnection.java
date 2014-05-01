@@ -15,6 +15,10 @@ public abstract class IBConnection implements IConnectionHandler {
 	public void connect() {
 		apiController.connect("127.0.0.1", 4001, 0); // 7496 - 4001
 	}
+	
+	public void disconnect() {
+		apiController.disconnect();
+	}
 
 	@Override
 	public void connected() {
