@@ -7,7 +7,6 @@ public interface IStrategy {
 	public void onTopLevelMktDataChange();
 	public void onOrderChange();
 	public void onClose();
-
-
+	
 
 }
