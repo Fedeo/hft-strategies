@@ -6,9 +6,15 @@ import com.hft.data.feed.IDataFeed;
 import com.hft.data.feed.ib.IBDataFeed;
 import com.hft.manager.orders.IOrderManager;
 import com.hft.manager.orders.ib.IBOrderManager;
+import com.hft.order.book.OrderBookController;
+import com.hft.strategy.StrategiesHandler;
+import com.hft.strategy.orderbook.simple.SimpleOrderBookStrategy;
 
 public class HFT {
 	static HFT INSTANCE = new HFT();
+	static IDataFeed dataFeed;
+	static IOrderManager orderManager;
+	static StrategiesHandler strategiesHandler = new StrategiesHandler();
 
 	/**
 	 * @param args
@@ -17,29 +23,51 @@ public class HFT {
 		INSTANCE.run();
 	}
 
+	public static IDataFeed dataFeed() {
+		return dataFeed;
+	}
+
+	public static IOrderManager orderManager() {
+		return orderManager;
+	}
+	
+	public static StrategiesHandler strategiesHandler() {
+		return strategiesHandler;
+	}
+
 	public void run() {
 
 		System.out.println("Starting");
 
-		//Initialize the datafeed and OrderManager
-		IDataFeed dataFeed = new IBDataFeed();
-		IOrderManager orderManager = new IBOrderManager(); 
+		// Initialize the datafeed and OrderManager
+		dataFeed = new IBDataFeed();
+		orderManager = new IBOrderManager();
+
+		// Initialize Strategies
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity usdJpy = new HftCurrencyPair("USD", "IDEALPRO", "JPY", "CASH");
 		
-		//Initialize Strategies
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR","IDEALPRO","USD","CASH");
+		//dataFeed.requestMktData(eurUsd);
+		//dataFeed.requestMktData(usdJpy);
 		
-		//Add DataFeed Request
-		dataFeed.requestMktData(eurUsd);
+		// Initialize Strategies
+		SimpleOrderBookStrategy simpleOrderBookStratEurUsd = new SimpleOrderBookStrategy(0.001, eurUsd);
+		SimpleOrderBookStrategy simpleOrderBookStraUsdJpy = new SimpleOrderBookStrategy(200.0, usdJpy);
 		
-		//Start the main
+		strategiesHandler.addStrategy(simpleOrderBookStratEurUsd);
+		strategiesHandler.addStrategy(simpleOrderBookStraUsdJpy);
+		strategiesHandler.initialize();
+
+		// Start the main
 		try {
-			Thread.sleep(30000);
+			Thread.sleep(10000);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
 
 		System.out.println("disconnecting");
+		System.out.println("EURUSD Spread = " + OrderBookController.getOrderBook(eurUsd.hashCode()).spreadBidAsk());
+		System.out.println("USDJPY Spread = " + OrderBookController.getOrderBook(usdJpy.hashCode()).spreadBidAsk());
 		dataFeed.disconnect();
 	}
-
 }
