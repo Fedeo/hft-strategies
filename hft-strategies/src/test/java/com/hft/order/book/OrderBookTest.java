@@ -14,12 +14,6 @@ public class OrderBookTest {
 	
 	ArrayList<BookItem> bid = new ArrayList<BookItem>();
 	ArrayList<BookItem> ask = new ArrayList<BookItem>();
-
-
-	@Test
-	public void testInitialize() {		
-		assertNotNull(OrderBook.getInstance());
-	}
 	
 	@Test
 	public void testUpdate() {
@@ -28,10 +22,11 @@ public class OrderBookTest {
 		bid.add(bookBid1);
 		bid.add(bookBid2);
 		
-		OrderBook.getInstance().update(bid, ask);
+		OrderBook book=new OrderBook();
+		book.update(bid, ask);
 		
-		assertTrue(OrderBook.getInstance().getBestAsk().equals(bookAsk1));
-		assertTrue(OrderBook.getInstance().getBestBid().equals(bookBid1));
+		assertTrue(book.getBestAsk().equals(bookAsk1));
+		assertTrue(book.getBestBid().equals(bookBid1));
 		
 	}
 	
@@ -42,9 +37,10 @@ public class OrderBookTest {
 		bid.add(bookBid1);
 		bid.add(bookBid2);
 		
-		OrderBook.getInstance().update(bid, ask);
+		OrderBook book=new OrderBook();
+		book.update(bid, ask);
 		Double price = bookBid1.price-bookAsk1.price;
-		assertEquals(OrderBook.getInstance().spreadBidAsk(),price);
+		assertEquals(book.spreadBidAsk(),price);
 		
 	}
 

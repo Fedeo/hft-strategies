@@ -7,17 +7,9 @@ public class OrderBook {
 	private ArrayList<BookItem> bid  = new ArrayList<BookItem>();
 	private ArrayList<BookItem> ask  = new ArrayList<BookItem>();
 
-	private static OrderBook uniqInstance;
-
-	private OrderBook() {
+	public OrderBook() {
 	}
 
-	public static synchronized OrderBook getInstance() {
-		if (uniqInstance == null) {
-			uniqInstance = new OrderBook();
-		}
-		return uniqInstance;
-	}
 	
 	public void update(ArrayList<BookItem> bid,ArrayList<BookItem> ask){
 		this.bid=bid;
