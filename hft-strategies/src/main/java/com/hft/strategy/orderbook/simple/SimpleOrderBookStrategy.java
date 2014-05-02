@@ -37,19 +37,19 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	@Override
 	public void onTopLevelMktDataChange() {
 		System.out.println("Change of TopLevelMktDataChange for SimpleOrderBookStrategy " + security.getSymbol() + "- notified" );
-		Boolean entryCondition = OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied; // &&
+		//Boolean entryCondition = OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied; // &&
 		// notInMarket
-		if (entryCondition) {
-			System.out.println("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:" + OrderBookController.spreadBidAsk(orderBookKey) );
+		//if (entryCondition) {
+			//System.out.println("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:" + OrderBookController.spreadBidAsk(orderBookKey) );
 			//HFT.orderManager().sendOrder();
-		}
+		//}
 	}
 
 	@Override
 	public void onOrderChange() {
 		// if Order has been submitted then place as OCA
-		HFT.orderManager().sendOrder(); // 1) order for the Profit Target
-		HFT.orderManager().sendOrder(); // 2) order for the Stop Loss
+		//HFT.orderManager().sendOrder(); // 1) order for the Profit Target
+		//HFT.orderManager().sendOrder(); // 2) order for the Stop Loss
 	}
 
 	@Override

@@ -11,30 +11,30 @@ public class OrderBookController {
 
 	static public void addBid(int orderBookKey, BookItem bookItem, int position) {
 		getOrderBook(orderBookKey).addBid(bookItem, position);
-		notifyStrategies(position);
+		notifyStrategies(orderBookKey, position);
 	}
 
 	static public void addAsk(int orderBookKey, BookItem bookItem, int position) {
 		getOrderBook(orderBookKey).addAsk(bookItem, position);
-		notifyStrategies(position);
+		notifyStrategies(orderBookKey, position);
 	}
 
 	static public Double spreadBidAsk(int orderBookKey) {
 		return getOrderBook(orderBookKey).spreadBidAsk();
 	}
-	
-	static protected void notifyStrategies(int position){
+
+	static protected void notifyStrategies(int orderBookKey, int position) {
 		if (position == 0)
-			notifyStrategiesForTopLevelMktDataChange();
-		notifyStrategiesForBookChange();
+			notifyStrategiesForTopLevelMktDataChange(orderBookKey);
+		notifyStrategiesForBookChange(orderBookKey);
 	}
 
-	static protected void notifyStrategiesForBookChange() {
-		StrategiesHandler.notifyStrategiesForBookChange();
+	static protected void notifyStrategiesForBookChange(int orderBookKey) {
+		StrategiesHandler.notifyStrategiesForBookChange(orderBookKey);
 	}
 
-	static protected void notifyStrategiesForTopLevelMktDataChange() {
-		StrategiesHandler.notifyStrategiesForTopLevelMktDataChange();
+	static protected void notifyStrategiesForTopLevelMktDataChange(int orderBookKey) {
+		StrategiesHandler.notifyStrategiesForTopLevelMktDataChange(orderBookKey);
 	}
 
 	static protected OrderBook getOrderBook(int orderBookKey) {

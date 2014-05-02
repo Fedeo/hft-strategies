@@ -1,19 +1,23 @@
 package com.hft.strategy;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.MultiHashMap;
+
+import com.hft.data.IHftSecurity;
+
 public class StrategiesHandler {
-	
-	//TODO Add Multimap to store the Strategies related that use a specific feed
-	//https://commons.apache.org/proper/commons-collections/javadocs/api-3.2.1/org/apache/commons/collections/MultiMap.html
 
 	private final static int MAX_STRATEGIES = 10;
 	static protected HashMap<Integer, IStrategy> strategies = new HashMap<Integer, IStrategy>(MAX_STRATEGIES);
+	static protected MultiHashMap mapSecuritiesStrategy = new MultiHashMap();
 
 	static public void addStrategy(IStrategy strategy) {
-		//TODO: implement registration table based on securities 
 		strategies.put(strategy.hashCode(), strategy);
+		registerSecuritiesForDataFeed(strategy);
 	}
 
 	static public IStrategy getStrategy(Integer hashCode) {
@@ -26,21 +30,34 @@ public class StrategiesHandler {
 			entry.getValue().onStart();
 		}
 	}
-	
-	static public void notifyStrategiesForBookChange(){
-		//TODO: implement notify only for strategies with current security
-		// Execute the onOrderBookDataChange method for all strategies
-		for (Map.Entry<Integer, IStrategy> entry : strategies.entrySet()) {
-			entry.getValue().onOrderBookDataChange();
+
+	@SuppressWarnings("unchecked")
+	static public void notifyStrategiesForBookChange(int securityKey) {
+		List<IStrategy> strategiesForCurrency = (List<IStrategy>) mapSecuritiesStrategy.get(securityKey);
+		Iterator<IStrategy> i = strategiesForCurrency.iterator();
+		while (i.hasNext()) {
+			IStrategy strategy = (IStrategy) i.next();
+			strategy.onOrderBookDataChange();
 		}
 	}
-	
-	static public void notifyStrategiesForTopLevelMktDataChange(){
-		//TODO: implement notify only for strategies with current security
-		// Execute the onTopLevelMktDataChange method for all strategies
-		for (Map.Entry<Integer, IStrategy> entry : strategies.entrySet()) {
-			entry.getValue().onTopLevelMktDataChange();
+
+	@SuppressWarnings("unchecked")
+	static public void notifyStrategiesForTopLevelMktDataChange(int securityKey) {
+		List<IStrategy> strategiesForCurrency = (List<IStrategy>) mapSecuritiesStrategy.get(securityKey);
+		Iterator<IStrategy> i = strategiesForCurrency.iterator();
+		while (i.hasNext()) {
+			IStrategy strategy = (IStrategy) i.next();
+			strategy.onTopLevelMktDataChange();
 		}
+	}
+
+	static protected void registerSecuritiesForDataFeed(IStrategy strategy) {
+		for (IHftSecurity security : strategy.getAllSecurities()) {
+			mapSecuritiesStrategy.put(security.hashCode(), strategy);
+			System.out.println("Registering " + security.getSymbol() + security.hashCode() + " for "
+					+ strategy.getStrategyName());
+		}
+
 	}
 
 }

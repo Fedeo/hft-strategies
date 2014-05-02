@@ -29,7 +29,6 @@ public class HFT {
 	public static IOrderManager orderManager() {
 		return orderManager;
 	}
-	
 
 	public void run() {
 
@@ -42,21 +41,18 @@ public class HFT {
 		// Initialize Strategies
 		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
 		IHftSecurity usdJpy = new HftCurrencyPair("USD", "IDEALPRO", "JPY", "CASH");
-		
-		//dataFeed.requestMktData(eurUsd);
-		//dataFeed.requestMktData(usdJpy);
-		
+
 		// Initialize Strategies
 		SimpleOrderBookStrategy simpleOrderBookStratEurUsd = new SimpleOrderBookStrategy(0.001, eurUsd);
 		SimpleOrderBookStrategy simpleOrderBookStraUsdJpy = new SimpleOrderBookStrategy(200.0, usdJpy);
-		
+
 		StrategiesHandler.addStrategy(simpleOrderBookStratEurUsd);
 		StrategiesHandler.addStrategy(simpleOrderBookStraUsdJpy);
 		StrategiesHandler.initialize();
 
 		// Start the main
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(3000);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
@@ -65,5 +61,6 @@ public class HFT {
 		System.out.println("EURUSD Spread = " + OrderBookController.spreadBidAsk(eurUsd.hashCode()));
 		System.out.println("USDJPY Spread = " + OrderBookController.spreadBidAsk(usdJpy.hashCode()));
 		dataFeed.disconnect();
+		//orderManager.disconnect(); //ADD
 	}
 }
