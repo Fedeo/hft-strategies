@@ -9,5 +9,7 @@ public interface IDataFeed {
 	public void disconnect();
 
 	public void requestMktData(IHftSecurity security);
+	
+	public void requestDeepMktData(IHftSecurity security);
 
 }

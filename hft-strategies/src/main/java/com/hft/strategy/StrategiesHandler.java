@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StrategiesHandler {
+	
+	//TODO Add Multimap to store the Strategies related that use a specific feed
+	//https://commons.apache.org/proper/commons-collections/javadocs/api-3.2.1/org/apache/commons/collections/MultiMap.html
 
 	private final static int MAX_STRATEGIES = 10;
 	static protected HashMap<Integer, IStrategy> strategies = new HashMap<Integer, IStrategy>(MAX_STRATEGIES);

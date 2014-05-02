@@ -26,7 +26,7 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	@Override
 	public void onStart() {
 		// Request the feed for the strategy
-		HFT.dataFeed().requestMktData(security);
+		HFT.dataFeed().requestDeepMktData(security);
 	}
 
 	@Override

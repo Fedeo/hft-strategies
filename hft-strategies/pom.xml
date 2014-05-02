@@ -3,4 +3,11 @@
   <groupId>com.hft</groupId>
   <artifactId>hft-strategies</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  	<dependency>
+  		<groupId>commons-collections</groupId>
+  		<artifactId>commons-collections</artifactId>
+  		<version>20040616</version>
+  	</dependency>
+  </dependencies>
 </project>

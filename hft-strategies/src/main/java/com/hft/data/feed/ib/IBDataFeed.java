@@ -63,7 +63,7 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 	}
 
 	@Override
-	public void requestMktData(IHftSecurity security) {
+	public void requestDeepMktData(IHftSecurity security) {
 
 		NewContract contract = new NewContract(IBAdapter.convertSecurity(security));
 		BookResult resultHandler = new BookResult(security);
@@ -102,6 +102,12 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void requestMktData(IHftSecurity security) {
+		// TODO Implement
+		
 	}
 
 }
