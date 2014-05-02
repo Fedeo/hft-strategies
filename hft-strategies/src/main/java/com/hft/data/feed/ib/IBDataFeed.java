@@ -68,6 +68,8 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 		NewContract contract = new NewContract(IBAdapter.convertSecurity(security));
 		BookResult resultHandler = new BookResult(security);
 
+		// TODO add a check to send a request only if the security is not yet
+		// controlled
 		apiController.reqDeepMktData(contract, 5, resultHandler);
 	}
 
@@ -88,15 +90,15 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 			BookItem bookItem = new BookItem(size, price);
 			if (operation == DeepType.INSERT) {
 				if (side == DeepSide.BUY) {
-					OrderBookController.getOrderBook(orderBookKey).addAsk(bookItem, position);
+					OrderBookController.addAsk(orderBookKey,bookItem, position);
 				} else {
-					OrderBookController.getOrderBook(orderBookKey).addBid(bookItem, position);
+					OrderBookController.addBid(orderBookKey,bookItem, position);
 				}
 			} else if (operation == DeepType.UPDATE) {
 				if (side == DeepSide.BUY) {
-					OrderBookController.getOrderBook(orderBookKey).addAsk(bookItem, position);
+					OrderBookController.addAsk(orderBookKey,bookItem, position);
 				} else {
-					OrderBookController.getOrderBook(orderBookKey).addBid(bookItem, position);
+					OrderBookController.addBid(orderBookKey,bookItem, position);
 				}
 			}
 		}

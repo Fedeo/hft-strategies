@@ -1,5 +1,8 @@
 package com.hft.strategy.orderbook.simple;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.hft.data.IHftSecurity;
 import com.hft.order.book.OrderBookController;
 import com.hft.run.HFT;
@@ -11,6 +14,7 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	private final Double spreadApplied;
 	private final IHftSecurity security;
 	private final int orderBookKey;
+	private final static String STRATEGY_NAME = "SimpleOrderBookStrategy";
 
 	public SimpleOrderBookStrategy(Double spreadApplied, IHftSecurity security) {
 		super();
@@ -27,16 +31,17 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 
 	@Override
 	public void onOrderBookDataChange() {
-		// no need to handle book change because this strategy
-		// is only working on top level of bid/ask
+		System.out.println("Change of book for SimpleOrderBookStrategy " + security.getSymbol() + "- notified" );
 	}
 
 	@Override
 	public void onTopLevelMktDataChange() {
-		Boolean entryCondition = OrderBookController.getOrderBook(orderBookKey).spreadBidAsk() > spreadApplied; // &&
-																							// notInMarket
+		System.out.println("Change of TopLevelMktDataChange for SimpleOrderBookStrategy " + security.getSymbol() + "- notified" );
+		Boolean entryCondition = OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied; // &&
+		// notInMarket
 		if (entryCondition) {
-			HFT.orderManager().sendOrder();
+			System.out.println("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:" + OrderBookController.spreadBidAsk(orderBookKey) );
+			//HFT.orderManager().sendOrder();
 		}
 	}
 
@@ -51,16 +56,17 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	public void onClose() {
 		// Verify that all orders have been closed
 	}
-	
+
 	@Override
-	public int hashCode() {
-		final int strategyPrimeCode = 31;
-		int result = 1;
-		result = strategyPrimeCode * result + ((security == null) ? 0 : security.hashCode());
-		result = strategyPrimeCode * result + ((spreadApplied == null) ? 0 : spreadApplied.hashCode());
-		return result;
+	public String getStrategyName() {
+		return STRATEGY_NAME;
 	}
 
-
+	@Override
+	public List<IHftSecurity> getAllSecurities() {
+		ArrayList<IHftSecurity> securities = new ArrayList<IHftSecurity>();
+		securities.add(this.security);
+		return securities;
+	}
 
 }

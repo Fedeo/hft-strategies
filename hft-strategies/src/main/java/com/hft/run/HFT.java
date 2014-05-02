@@ -14,7 +14,6 @@ public class HFT {
 	static HFT INSTANCE = new HFT();
 	static IDataFeed dataFeed;
 	static IOrderManager orderManager;
-	static StrategiesHandler strategiesHandler = new StrategiesHandler();
 
 	/**
 	 * @param args
@@ -31,9 +30,6 @@ public class HFT {
 		return orderManager;
 	}
 	
-	public static StrategiesHandler strategiesHandler() {
-		return strategiesHandler;
-	}
 
 	public void run() {
 
@@ -54,9 +50,9 @@ public class HFT {
 		SimpleOrderBookStrategy simpleOrderBookStratEurUsd = new SimpleOrderBookStrategy(0.001, eurUsd);
 		SimpleOrderBookStrategy simpleOrderBookStraUsdJpy = new SimpleOrderBookStrategy(200.0, usdJpy);
 		
-		strategiesHandler.addStrategy(simpleOrderBookStratEurUsd);
-		strategiesHandler.addStrategy(simpleOrderBookStraUsdJpy);
-		strategiesHandler.initialize();
+		StrategiesHandler.addStrategy(simpleOrderBookStratEurUsd);
+		StrategiesHandler.addStrategy(simpleOrderBookStraUsdJpy);
+		StrategiesHandler.initialize();
 
 		// Start the main
 		try {
@@ -66,8 +62,8 @@ public class HFT {
 		}
 
 		System.out.println("disconnecting");
-		System.out.println("EURUSD Spread = " + OrderBookController.getOrderBook(eurUsd.hashCode()).spreadBidAsk());
-		System.out.println("USDJPY Spread = " + OrderBookController.getOrderBook(usdJpy.hashCode()).spreadBidAsk());
+		System.out.println("EURUSD Spread = " + OrderBookController.spreadBidAsk(eurUsd.hashCode()));
+		System.out.println("USDJPY Spread = " + OrderBookController.spreadBidAsk(usdJpy.hashCode()));
 		dataFeed.disconnect();
 	}
 }
