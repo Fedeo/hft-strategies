@@ -3,8 +3,9 @@ package com.hft.strategy.orderbook.simple;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.hft.data.IHftSecurity;
-import com.hft.order.book.OrderBookController;
 import com.hft.run.HFT;
 import com.hft.strategy.IStrategy;
 import com.hft.strategy.orderbook.OrderBookStrategy;
@@ -15,6 +16,8 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	private final IHftSecurity security;
 	private final int orderBookKey;
 	private final static String STRATEGY_NAME = "SimpleOrderBookStrategy";
+
+	static Logger logger = Logger.getLogger(SimpleOrderBookStrategy.class.getName());
 
 	public SimpleOrderBookStrategy(Double spreadApplied, IHftSecurity security) {
 		super();
@@ -31,25 +34,29 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 
 	@Override
 	public void onOrderBookDataChange() {
-		System.out.println("Change of book for SimpleOrderBookStrategy " + security.getSymbol() + "- notified" );
+		logger.debug("Change of book for SimpleOrderBookStrategy " + security.getSymbol() + "- notified");
 	}
 
 	@Override
 	public void onTopLevelMktDataChange() {
-		System.out.println("Change of TopLevelMktDataChange for SimpleOrderBookStrategy " + security.getSymbol() + "- notified" );
-		//Boolean entryCondition = OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied; // &&
+		logger.debug("Change of TopLevelMktDataChange for SimpleOrderBookStrategy " + security.getSymbol()
+				+ "- notified");
+		// Boolean entryCondition =
+		// OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied; // &&
 		// notInMarket
-		//if (entryCondition) {
-			//System.out.println("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:" + OrderBookController.spreadBidAsk(orderBookKey) );
-			//HFT.orderManager().sendOrder();
-		//}
+		// if (entryCondition) {
+		// System.out.println("Send Order for SimpleOrderBookStrategy " +
+		// security.getSymbol() + "- Spread:" +
+		// OrderBookController.spreadBidAsk(orderBookKey) );
+		// HFT.orderManager().sendOrder();
+		// }
 	}
 
 	@Override
 	public void onOrderChange() {
 		// if Order has been submitted then place as OCA
-		//HFT.orderManager().sendOrder(); // 1) order for the Profit Target
-		//HFT.orderManager().sendOrder(); // 2) order for the Stop Loss
+		// HFT.orderManager().sendOrder(); // 1) order for the Profit Target
+		// HFT.orderManager().sendOrder(); // 2) order for the Stop Loss
 	}
 
 	@Override

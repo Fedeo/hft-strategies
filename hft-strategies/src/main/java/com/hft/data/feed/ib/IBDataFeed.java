@@ -2,6 +2,8 @@ package com.hft.data.feed.ib;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.hft.adapter.ib.controller.ApiController.IDeepMktDataHandler;
 import com.hft.adapter.ib.controller.NewContract;
 import com.hft.adapter.ib.controller.Types.DeepSide;
@@ -13,6 +15,8 @@ import com.hft.order.book.BookItem;
 import com.hft.order.book.OrderBookController;
 
 public class IBDataFeed extends IBConnection implements IDataFeed {
+
+	static Logger logger = Logger.getLogger(IBDataFeed.class.getName());
 
 	public IBDataFeed() {
 		connect();
@@ -79,26 +83,26 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 
 		public BookResult(IHftSecurity security) {
 			this.orderBookKey = security.hashCode();
-			System.out.println("registering request for " + orderBookKey);
+			logger.info("registering request for " + orderBookKey);
 		}
 
 		@Override
 		public void updateMktDepth(int position, String marketMaker, DeepType operation, DeepSide side, double price,
 				int size) {
-			System.out.println("Getting feedback for " + orderBookKey + " " + position + " " + price);
+			logger.info("Getting feedback for " + orderBookKey + " " + position + " " + price);
 			// Update del Book
 			BookItem bookItem = new BookItem(size, price);
 			if (operation == DeepType.INSERT) {
 				if (side == DeepSide.BUY) {
-					OrderBookController.addAsk(orderBookKey,bookItem, position);
+					OrderBookController.addAsk(orderBookKey, bookItem, position);
 				} else {
-					OrderBookController.addBid(orderBookKey,bookItem, position);
+					OrderBookController.addBid(orderBookKey, bookItem, position);
 				}
 			} else if (operation == DeepType.UPDATE) {
 				if (side == DeepSide.BUY) {
-					OrderBookController.addAsk(orderBookKey,bookItem, position);
+					OrderBookController.addAsk(orderBookKey, bookItem, position);
 				} else {
-					OrderBookController.addBid(orderBookKey,bookItem, position);
+					OrderBookController.addBid(orderBookKey, bookItem, position);
 				}
 			}
 		}
@@ -107,7 +111,6 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 	@Override
 	public void requestMktData(IHftSecurity security) {
 		// TODO Implement
-		
 	}
 
 }

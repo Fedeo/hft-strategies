@@ -1,5 +1,7 @@
 package com.hft.run;
 
+import org.apache.log4j.Logger;
+
 import com.hft.data.HftCurrencyPair;
 import com.hft.data.IHftSecurity;
 import com.hft.data.feed.IDataFeed;
@@ -14,6 +16,8 @@ public class HFT {
 	static HFT INSTANCE = new HFT();
 	static IDataFeed dataFeed;
 	static IOrderManager orderManager;
+	
+	static Logger logger = Logger.getLogger(HFT.class);
 
 	/**
 	 * @param args
@@ -32,7 +36,7 @@ public class HFT {
 
 	public void run() {
 
-		System.out.println("Starting");
+		logger.info("Starting HFT Strategies version: " + ApplicationConfiguration.getVersion());
 
 		// Initialize the datafeed and OrderManager
 		dataFeed = new IBDataFeed();
@@ -52,15 +56,14 @@ public class HFT {
 
 		// Start the main
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(5000);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
 
-		System.out.println("disconnecting");
+		logger.info("disconnecting");
 		System.out.println("EURUSD Spread = " + OrderBookController.spreadBidAsk(eurUsd.hashCode()));
 		System.out.println("USDJPY Spread = " + OrderBookController.spreadBidAsk(usdJpy.hashCode()));
 		dataFeed.disconnect();
-		//orderManager.disconnect(); //ADD
 	}
 }
