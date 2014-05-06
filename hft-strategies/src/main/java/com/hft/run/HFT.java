@@ -6,7 +6,7 @@ import com.hft.data.HftCurrencyPair;
 import com.hft.data.IHftSecurity;
 import com.hft.data.feed.IDataFeed;
 import com.hft.data.feed.ib.IBDataFeed;
-import com.hft.manager.orders.IOrderManager;
+import com.hft.manager.orders.IOrderConnector;
 import com.hft.manager.orders.ib.IBOrderManager;
 import com.hft.order.book.OrderBookController;
 import com.hft.strategy.StrategiesHandler;
@@ -15,8 +15,8 @@ import com.hft.strategy.orderbook.simple.SimpleOrderBookStrategy;
 public class HFT {
 	static HFT INSTANCE = new HFT();
 	static IDataFeed dataFeed;
-	static IOrderManager orderManager;
-	
+	static IOrderConnector orderConnector;
+
 	static Logger logger = Logger.getLogger(HFT.class);
 
 	/**
@@ -30,8 +30,8 @@ public class HFT {
 		return dataFeed;
 	}
 
-	public static IOrderManager orderManager() {
-		return orderManager;
+	public static IOrderConnector orderConnector() {
+		return orderConnector;
 	}
 
 	public void run() {
@@ -40,7 +40,7 @@ public class HFT {
 
 		// Initialize the datafeed and OrderManager
 		dataFeed = new IBDataFeed();
-		orderManager = new IBOrderManager();
+		orderConnector = new IBOrderManager("DU153566");
 
 		// Initialize Strategies
 		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");

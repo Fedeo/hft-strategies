@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.hft.data.IHftSecurity;
+import com.hft.order.book.OrderBookController;
 import com.hft.run.HFT;
 import com.hft.strategy.IStrategy;
 import com.hft.strategy.orderbook.OrderBookStrategy;
@@ -41,15 +42,14 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	public void onTopLevelMktDataChange() {
 		logger.debug("Change of TopLevelMktDataChange for SimpleOrderBookStrategy " + security.getSymbol()
 				+ "- notified");
-		// Boolean entryCondition =
+		Boolean entryCondition = false;
+		Double currentSpread = OrderBookController.spreadBidAsk(orderBookKey);
 		// OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied; // &&
 		// notInMarket
-		// if (entryCondition) {
-		// System.out.println("Send Order for SimpleOrderBookStrategy " +
-		// security.getSymbol() + "- Spread:" +
-		// OrderBookController.spreadBidAsk(orderBookKey) );
-		// HFT.orderManager().sendOrder();
-		// }
+		if (entryCondition && !isInMarket(this.hashCode())) {
+			logger.info("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:" + currentSpread);
+			buyLimit(security, new Double(10.0), 1);
+		}
 	}
 
 	@Override
@@ -63,6 +63,7 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	public void onClose() {
 		// Verify that all orders have been closed
 	}
+	
 
 	@Override
 	public String getStrategyName() {

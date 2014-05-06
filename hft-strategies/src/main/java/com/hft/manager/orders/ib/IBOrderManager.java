@@ -12,81 +12,46 @@ import com.hft.adapter.ib.controller.NewOrder;
 import com.hft.adapter.ib.controller.NewOrderState;
 import com.hft.adapter.ib.controller.OrderStatus;
 import com.hft.connector.ib.IBConnection;
-import com.hft.manager.orders.IOrderManager;
+import com.hft.data.IHftSecurity;
+import com.hft.manager.orders.IOrderConnector;
+import com.hft.manager.orders.Sequence;
 
-public class IBOrderManager extends IBConnection implements IOrderManager {
+public class IBOrderManager extends IBConnection implements IOrderConnector {
 
-	public IBOrderManager() {
+	protected String accountId;
+
+	public IBOrderManager(String accountId) {
 		super.connect();
+		this.accountId = accountId;
 		apiController.reqLiveOrders(new OrdersModel());
 	}
 
 	@Override
-	public void sendOrder() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void buy() {
+	public void sendOrder(IHftSecurity security, String action, String orderType, Double price,int qty) {
 
 		Contract c = new Contract();
-		c.m_symbol = "EUR";
-		c.m_exchange = "IDEALPRO";
-		c.m_currency = "USD";
-		c.m_secType = "CASH";
-		NewContract contract = new NewContract(c);
+		c.m_symbol = security.getSymbol();
+		c.m_exchange = security.getExchange();
+		c.m_currency = security.getCurrency();
+		c.m_secType = security.getSecType();
 
 		// Create an Order
 		Order order = new Order();
-		order.m_orderId = 300;
-		order.m_account = "DU153566";
-		order.m_action = "BUY";
-		order.m_orderType = "MKT";
-		order.m_totalQuantity = order.m_orderId;
-		order.m_tif = "DAY";
-		order.m_referencePriceType = 0;
-
-		System.out.println("Submit di un ordine BUY");
-
-		// Submit di un ordine
-		apiController.placeOrModifyOrder(contract, new NewOrder(order), new IOrderHandler() {
-			@Override
-			public void orderState(NewOrderState orderState) {
-				apiController.removeOrderHandler(this);
-				System.out.println("Inside orderState");
-			}
-
-			@Override
-			public void handle(int errorCode, final String errorMsg) {
-				System.out.println("Inside handle");
-			}
-		});
-
-	}
-
-	public void sell(int qty) {
-
-		Contract c = new Contract();
-		c.m_symbol = "EUR";
-		c.m_exchange = "IDEALPRO";
-		c.m_currency = "USD";
-		c.m_secType = "CASH";
-		NewContract contract = new NewContract(c);
-
-		// Create an Order
-		Order order = new Order();
-		order.m_orderId = 300;
-		order.m_account = "DU153566";
-		order.m_action = "SELL";
-		order.m_orderType = "MKT";
+		order.m_orderId = Sequence.getInstance().getAndIncreaseOrderId();
+		order.m_account = accountId;
+		order.m_action = action;
+		order.m_orderType = orderType;
 		order.m_totalQuantity = qty;
+		if (orderType.equals("LMT")) order.m_lmtPrice = price;
 		order.m_tif = "DAY";
 		order.m_referencePriceType = 0;
 
-		System.out.println("Submit di un ordine SELL di chiusura");
+		placeOrder(new NewContract(c), new NewOrder(order));
+	}
 
-		// Submit di un ordine
-		apiController.placeOrModifyOrder(contract, new NewOrder(order), new IOrderHandler() {
+	private void placeOrder(NewContract contract, NewOrder order) {
+
+		apiController.placeOrModifyOrder(contract, order, new IOrderHandler() {
 			@Override
 			public void orderState(NewOrderState orderState) {
 				apiController.removeOrderHandler(this);
