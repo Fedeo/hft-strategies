@@ -12,7 +12,7 @@ public interface IStrategy {
 
 	public void onTopLevelMktDataChange();
 
-	public void onOrderChange();
+	public void onOrderChange(int OrderId);
 
 	public void onClose();
 

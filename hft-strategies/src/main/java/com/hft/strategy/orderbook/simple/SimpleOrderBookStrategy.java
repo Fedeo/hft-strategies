@@ -5,12 +5,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.hft.data.HftOrder;
 import com.hft.data.IHftSecurity;
-import com.hft.manager.orders.Sequence;
 import com.hft.order.book.BookItem;
 import com.hft.order.book.OrderBookController;
-import com.hft.run.Constant;
 import com.hft.run.HFT;
 import com.hft.strategy.IStrategy;
 import com.hft.strategy.orderbook.OrderBookStrategy;
@@ -53,12 +50,13 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 		// notInMarket
 		if (entryCondition && !isInMarket(this)) {
 			logger.info("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:" + currentSpread);
-			buyLimit(security,bestBid.price,200);
+			buyLimit(security, bestBid.price, 200);
 		}
 	}
 
 	@Override
-	public void onOrderChange() {
+	public void onOrderChange(int OrderId) {
+		logger.debug("Change of book for SimpleOrderBookStrategy " + security.getSymbol() + "- notified");
 		// if Order has been submitted then place as OCA
 		// HFT.orderManager().sendOrder(); // 1) order for the Profit Target
 		// HFT.orderManager().sendOrder(); // 2) order for the Stop Loss
@@ -73,7 +71,7 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	public IStrategy getStrategy() {
 		return this;
 	}
-	
+
 	@Override
 	public String getStrategyName() {
 		return STRATEGY_NAME;

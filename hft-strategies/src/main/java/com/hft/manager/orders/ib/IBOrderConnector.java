@@ -3,6 +3,8 @@ package com.hft.manager.orders.ib;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 import com.hft.adapter.ib.client.Contract;
 import com.hft.adapter.ib.client.Order;
 import com.hft.adapter.ib.controller.ApiController.ILiveOrderHandler;
@@ -14,12 +16,13 @@ import com.hft.adapter.ib.controller.OrderStatus;
 import com.hft.connector.ib.IBConnection;
 import com.hft.connector.orders.IOrderConnector;
 import com.hft.data.HftOrder;
-import com.hft.data.IHftSecurity;
-import com.hft.manager.orders.Sequence;
+import com.hft.manager.orders.OrderManager;
 
 public class IBOrderConnector extends IBConnection implements IOrderConnector {
 
 	protected String accountId;
+
+	static Logger logger = Logger.getLogger(IBOrderConnector.class.getName());
 
 	public IBOrderConnector(String accountId) {
 		super.connect();
@@ -43,7 +46,8 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 		order.m_action = newOrder.action;
 		order.m_orderType = newOrder.orderType;
 		order.m_totalQuantity = newOrder.qty;
-		if (newOrder.orderType.compareTo("LMT")==0) order.m_lmtPrice = newOrder.lmtPrice;
+		if (newOrder.orderType.compareTo("LMT") == 0)
+			order.m_lmtPrice = newOrder.lmtPrice;
 		order.m_tif = "DAY";
 		order.m_referencePriceType = 0;
 
@@ -56,12 +60,10 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 			@Override
 			public void orderState(NewOrderState orderState) {
 				apiController.removeOrderHandler(this);
-				System.out.println("Inside orderState");
 			}
 
 			@Override
 			public void handle(int errorCode, final String errorMsg) {
-				System.out.println("Inside handle");
 			}
 		});
 
@@ -83,7 +85,15 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 		@Override
 		public void openOrder(NewContract contract, NewOrder order, NewOrderState orderState) {
 
-			System.out.println("openOrder " + order.orderId() + " " + orderState.status());
+			logger.info("opening order " + order.orderId() + " " + orderState.status());
+
+			/*
+			 * Hft Code
+			 */
+
+			/*
+			 * Code from interfaces TODO: understand if removable or not
+			 */
 
 			OrderRow full = m_map.get(order.permId());
 			if (full != null) {
@@ -112,9 +122,20 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 		public void orderStatus(int orderId, OrderStatus status, int filled, int remaining, double avgFillPrice,
 				long permId, int parentId, double lastFillPrice, int clientId, String whyHeld) {
 
-			System.out.println("getting status " + orderId + " " + status.toString() + " " + filled);
+			logger.info("order status:" + orderId + " status:" + status.toString() + " filled:" + filled);
 
 			// if (status==OrderStatus.Filled) {INSTANCE.sell(filled);}
+			/*
+			 * Hft Code
+			 */
+
+			if (status == OrderStatus.Filled) {
+				if (filled == 0) {
+					OrderManager.setOrderAcknowledged(orderId);
+				} else {
+					OrderManager.setOrderFilled(orderId);
+				}
+			}
 
 			OrderRow full = m_map.get(permId);
 			if (full != null) {

@@ -16,7 +16,17 @@ public class OrderManager {
 	}
 	
 	static public void addOrder(HftOrder order,IStrategy strategy){
-		OrderWorkFlowManager.getInstance().addOrder(strategy.hashCode(), order);
+		OrderWorkFlowManager.getInstance().addOrder(strategy, order);
+	}
+	
+	static public void setOrderAcknowledged(int orderId){
+		OrderWorkFlowManager.getInstance().changeStatusToOrder(orderId, Constant.ORDER_ACKNOWLEDGED);
+		//Notify strategy related to this order
+	}
+	
+	static public void setOrderFilled(int orderId){
+		OrderWorkFlowManager.getInstance().changeStatusToOrder(orderId, Constant.ORDER_FILLED);
+		//Notify strategy related to this order
 	}
 
 	static protected Long getQuantityOnMarket(List<HftOrder> ordersPlaced) {
