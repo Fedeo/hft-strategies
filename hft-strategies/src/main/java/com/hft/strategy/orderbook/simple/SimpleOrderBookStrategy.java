@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.hft.data.HftOrder;
 import com.hft.data.IHftSecurity;
+import com.hft.manager.orders.Sequence;
+import com.hft.order.book.BookItem;
 import com.hft.order.book.OrderBookController;
+import com.hft.run.Constant;
 import com.hft.run.HFT;
 import com.hft.strategy.IStrategy;
 import com.hft.strategy.orderbook.OrderBookStrategy;
@@ -44,11 +48,12 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 				+ "- notified");
 		Boolean entryCondition = false;
 		Double currentSpread = OrderBookController.spreadBidAsk(orderBookKey);
+		BookItem bestBid = OrderBookController.getBestBid(orderBookKey);
 		// OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied; // &&
 		// notInMarket
-		if (entryCondition && !isInMarket(this.hashCode())) {
+		if (entryCondition && !isInMarket(this)) {
 			logger.info("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:" + currentSpread);
-			buyLimit(security, new Double(10.0), 1);
+			buyLimit(security,bestBid.price,200);
 		}
 	}
 
@@ -63,8 +68,12 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	public void onClose() {
 		// Verify that all orders have been closed
 	}
-	
 
+	@Override
+	public IStrategy getStrategy() {
+		return this;
+	}
+	
 	@Override
 	public String getStrategyName() {
 		return STRATEGY_NAME;

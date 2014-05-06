@@ -1,10 +1,9 @@
 package com.hft.connector.orders;
 
-import com.hft.data.IHftSecurity;
+import com.hft.data.HftOrder;
 
 public interface IOrderConnector {
 
-	void sendOrder(IHftSecurity security, String action, String orderType, Double price, int qty);
-	
-	
+	void sendOrder(HftOrder newOrder);
+
 }

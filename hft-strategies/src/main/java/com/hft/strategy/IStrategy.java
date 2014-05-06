@@ -16,6 +16,8 @@ public interface IStrategy {
 
 	public void onClose();
 
+	public IStrategy getStrategy();
+	
 	public String getStrategyName();
 
 	public List<IHftSecurity> getAllSecurities();

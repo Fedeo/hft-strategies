@@ -13,6 +13,7 @@ import com.hft.adapter.ib.controller.NewOrderState;
 import com.hft.adapter.ib.controller.OrderStatus;
 import com.hft.connector.ib.IBConnection;
 import com.hft.connector.orders.IOrderConnector;
+import com.hft.data.HftOrder;
 import com.hft.data.IHftSecurity;
 import com.hft.manager.orders.Sequence;
 
@@ -27,22 +28,22 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 	}
 
 	@Override
-	public void sendOrder(IHftSecurity security, String action, String orderType, Double price,int qty) {
+	public void sendOrder(HftOrder newOrder) {
 
 		Contract c = new Contract();
-		c.m_symbol = security.getSymbol();
-		c.m_exchange = security.getExchange();
-		c.m_currency = security.getCurrency();
-		c.m_secType = security.getSecType();
+		c.m_symbol = newOrder.security.getSymbol();
+		c.m_exchange = newOrder.security.getExchange();
+		c.m_currency = newOrder.security.getCurrency();
+		c.m_secType = newOrder.security.getSecType();
 
 		// Create an Order
 		Order order = new Order();
-		order.m_orderId = Sequence.getInstance().getAndIncreaseOrderId();
+		order.m_orderId = newOrder.orderId;
 		order.m_account = accountId;
-		order.m_action = action;
-		order.m_orderType = orderType;
-		order.m_totalQuantity = qty;
-		if (orderType.equals("LMT")) order.m_lmtPrice = price;
+		order.m_action = newOrder.action;
+		order.m_orderType = newOrder.orderType;
+		order.m_totalQuantity = newOrder.qty;
+		if (newOrder.orderType.compareTo("LMT")==0) order.m_lmtPrice = newOrder.lmtPrice;
 		order.m_tif = "DAY";
 		order.m_referencePriceType = 0;
 

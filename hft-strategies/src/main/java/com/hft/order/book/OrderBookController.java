@@ -22,6 +22,14 @@ public class OrderBookController {
 	static public Double spreadBidAsk(int orderBookKey) {
 		return getOrderBook(orderBookKey).spreadBidAsk();
 	}
+	
+	static public BookItem getBestBid(int orderBookKey) {
+		return getOrderBook(orderBookKey).getBestBid();
+	}
+	
+	static public BookItem getBestAsk(int orderBookKey) {
+		return getOrderBook(orderBookKey).getBestAsk();
+	}
 
 	static protected void notifyStrategies(int orderBookKey, int position) {
 		if (position == 0)
