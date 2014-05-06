@@ -2,12 +2,12 @@ package com.hft.run;
 
 import org.apache.log4j.Logger;
 
+import com.hft.connector.orders.IOrderConnector;
 import com.hft.data.HftCurrencyPair;
 import com.hft.data.IHftSecurity;
 import com.hft.data.feed.IDataFeed;
 import com.hft.data.feed.ib.IBDataFeed;
-import com.hft.manager.orders.IOrderConnector;
-import com.hft.manager.orders.ib.IBOrderManager;
+import com.hft.manager.orders.ib.IBOrderConnector;
 import com.hft.order.book.OrderBookController;
 import com.hft.strategy.StrategiesHandler;
 import com.hft.strategy.orderbook.simple.SimpleOrderBookStrategy;
@@ -40,7 +40,7 @@ public class HFT {
 
 		// Initialize the datafeed and OrderManager
 		dataFeed = new IBDataFeed();
-		orderConnector = new IBOrderManager("DU153566");
+		orderConnector = new IBOrderConnector("DU153566");
 
 		// Initialize Strategies
 		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");

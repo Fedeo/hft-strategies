@@ -1,4 +1,4 @@
-package com.hft.manager.orders;
+package com.hft.connector.orders;
 
 import com.hft.data.IHftSecurity;
 

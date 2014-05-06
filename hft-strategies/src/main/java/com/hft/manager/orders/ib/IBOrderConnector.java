@@ -12,15 +12,15 @@ import com.hft.adapter.ib.controller.NewOrder;
 import com.hft.adapter.ib.controller.NewOrderState;
 import com.hft.adapter.ib.controller.OrderStatus;
 import com.hft.connector.ib.IBConnection;
+import com.hft.connector.orders.IOrderConnector;
 import com.hft.data.IHftSecurity;
-import com.hft.manager.orders.IOrderConnector;
 import com.hft.manager.orders.Sequence;
 
-public class IBOrderManager extends IBConnection implements IOrderConnector {
+public class IBOrderConnector extends IBConnection implements IOrderConnector {
 
 	protected String accountId;
 
-	public IBOrderManager(String accountId) {
+	public IBOrderConnector(String accountId) {
 		super.connect();
 		this.accountId = accountId;
 		apiController.reqLiveOrders(new OrdersModel());
