@@ -2,6 +2,8 @@ package com.hft.order.book;
 
 import java.util.HashMap;
 
+import com.hft.order.book.exceptions.BookItemNotAvailableException;
+import com.hft.order.book.exceptions.SpreadNotAvailableException;
 import com.hft.strategy.StrategiesHandler;
 
 public class OrderBookController {
@@ -19,15 +21,15 @@ public class OrderBookController {
 		notifyStrategies(orderBookKey, position);
 	}
 
-	static public Double spreadBidAsk(int orderBookKey) {
+	static public Double spreadBidAsk(int orderBookKey) throws SpreadNotAvailableException {
 		return getOrderBook(orderBookKey).spreadBidAsk();
 	}
 	
-	static public BookItem getBestBid(int orderBookKey) {
+	static public BookItem getBestBid(int orderBookKey) throws BookItemNotAvailableException {
 		return getOrderBook(orderBookKey).getBestBid();
 	}
 	
-	static public BookItem getBestAsk(int orderBookKey) {
+	static public BookItem getBestAsk(int orderBookKey) throws BookItemNotAvailableException {
 		return getOrderBook(orderBookKey).getBestAsk();
 	}
 

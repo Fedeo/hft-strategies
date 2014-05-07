@@ -89,7 +89,7 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 		@Override
 		public void updateMktDepth(int position, String marketMaker, DeepType operation, DeepSide side, double price,
 				int size) {
-			logger.info("Getting feedback for " + orderBookKey + " " + position + " " + price);
+			logger.debug("Getting feedback for " + orderBookKey + " " + position + " " + price);
 			// Update del Book
 			BookItem bookItem = new BookItem(size, price);
 			if (operation == DeepType.INSERT) {

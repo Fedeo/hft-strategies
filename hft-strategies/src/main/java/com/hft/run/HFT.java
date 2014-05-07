@@ -56,14 +56,14 @@ public class HFT {
 
 		// Start the main
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(10000);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
 
 		logger.info("disconnecting");
-		System.out.println("EURUSD Spread = " + OrderBookController.spreadBidAsk(eurUsd.hashCode()));
-		System.out.println("USDJPY Spread = " + OrderBookController.spreadBidAsk(usdJpy.hashCode()));
+		//System.out.println("EURUSD Spread = " + OrderBookController.spreadBidAsk(eurUsd.hashCode()));
+		//System.out.println("USDJPY Spread = " + OrderBookController.spreadBidAsk(usdJpy.hashCode()));
 		dataFeed.disconnect();
 	}
 }

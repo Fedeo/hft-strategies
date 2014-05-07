@@ -21,12 +21,10 @@ public class OrderManager {
 	
 	static public void setOrderAcknowledged(int orderId){
 		OrderWorkFlowManager.getInstance().changeStatusToOrder(orderId, Constant.ORDER_ACKNOWLEDGED);
-		//Notify strategy related to this order
 	}
 	
 	static public void setOrderFilled(int orderId){
 		OrderWorkFlowManager.getInstance().changeStatusToOrder(orderId, Constant.ORDER_FILLED);
-		//Notify strategy related to this order
 	}
 
 	static protected Long getQuantityOnMarket(List<HftOrder> ordersPlaced) {
