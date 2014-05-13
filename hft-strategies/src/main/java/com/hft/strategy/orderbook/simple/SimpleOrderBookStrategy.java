@@ -16,6 +16,7 @@ import com.hft.strategy.orderbook.OrderBookStrategy;
 
 public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrategy {
 
+	protected int counter = 0;
 	private final Double spreadApplied;
 	private final IHftSecurity security;
 	private final int orderBookKey;
@@ -45,20 +46,28 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	public void onTopLevelMktDataChange() {
 		logger.debug("Change of TopLevelMktDataChange for SimpleOrderBookStrategy " + security.getSymbol()
 				+ "- notified");
-		Boolean entryCondition = false;
+		Boolean entryCondition = (counter == 10);
 		Double currentSpread;
 		BookItem bestBid;
 
 		try {
 			currentSpread = OrderBookController.spreadBidAsk(orderBookKey);
-			bestBid = OrderBookController.getBestBid(orderBookKey);
-
+			bestBid = OrderBookController.getBestAsk(orderBookKey);
+			counter++;
+			if ((counter % 10)==0){
+				System.out.println("dovrebbe entrare");
+				entryCondition=true;
+			}
 			logger.debug("SimpleOrderBookStrategy current spread:" + currentSpread);
 			// OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied;
 			if (entryCondition && !isInMarket(this)) {
 				logger.info("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:"
 						+ currentSpread);
-				buyLimit(security, bestBid.price, 200);
+				System.out.println("bestBid:" + OrderBookController.getBestBid(orderBookKey).price);
+				System.out.println("bestAsk:" + OrderBookController.getBestAsk(orderBookKey).price);
+				System.out.println("lmtprice:" + bestBid.price);
+				// buyLimit(security, bestBid.price, 200);
+				buyMarket(security, 200);
 			}
 		} catch (SpreadNotAvailableException e) {
 			logger.debug("Book not yet completed to calculate the spread");
@@ -70,7 +79,7 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 
 	@Override
 	public void onOrderChange(int OrderId) {
-		logger.debug("Change of Order for SimpleOrderBookStrategy orderId:" + OrderId + "- notified");
+		logger.info("Change of Order for SimpleOrderBookStrategy orderId:" + OrderId + "- notified");
 		// if Order has been submitted then place as OCA
 		// HFT.orderManager().sendOrder(); // 1) order for the Profit Target
 		// HFT.orderManager().sendOrder(); // 2) order for the Stop Loss

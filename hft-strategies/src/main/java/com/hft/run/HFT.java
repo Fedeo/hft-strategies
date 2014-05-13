@@ -56,7 +56,7 @@ public class HFT {
 
 		// Start the main
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(20000);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}

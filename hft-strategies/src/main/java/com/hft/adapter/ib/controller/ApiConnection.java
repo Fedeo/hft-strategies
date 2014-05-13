@@ -77,6 +77,7 @@ public class ApiConnection extends EClientSocket {
 		// not connected?
 		if( !isConnected() ) {
             notConnected();
+            System.out.println("not connected");
 			return;
 		}
 

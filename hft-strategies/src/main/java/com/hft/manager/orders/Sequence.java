@@ -6,11 +6,12 @@ public class Sequence {
 
 	private static Sequence instance = null;
 	private static final int MIN = 0;
-	private static final int MAX = 10000;
+	private static final int MAX = 100000;
 
 	protected static AtomicLong ordercounter = new AtomicLong(MIN + (int) (Math.random() * ((MAX - MIN) + 1)));
 
 	protected Sequence() {
+		System.out.println(ordercounter);
 	}
 
 	public static Sequence getInstance() {

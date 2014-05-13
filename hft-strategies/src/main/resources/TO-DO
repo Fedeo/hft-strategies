@@ -3,4 +3,11 @@
 3) Add Request Market Data Top Level
 4) Plug a User Interface to the application
 5) Create a moke Adapter for testing
-6) Add Unit Test
+6) Add Unit Test:
+	- StrategyHandler : DONE
+	- OrderBookController
+	- SimpleOrderBookStrategy
+7) Add Exception Handling:
+	- StrategyHandler 
+	- BookController
+	- SimpleOrderBookStrategy

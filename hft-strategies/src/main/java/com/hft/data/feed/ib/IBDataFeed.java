@@ -1,13 +1,12 @@
 package com.hft.data.feed.ib;
 
-import java.util.ArrayList;
-
 import org.apache.log4j.Logger;
 
 import com.hft.adapter.ib.controller.ApiController.IDeepMktDataHandler;
 import com.hft.adapter.ib.controller.NewContract;
 import com.hft.adapter.ib.controller.Types.DeepSide;
 import com.hft.adapter.ib.controller.Types.DeepType;
+import com.hft.connector.ib.HFTOrderController;
 import com.hft.connector.ib.IBConnection;
 import com.hft.data.IHftSecurity;
 import com.hft.data.feed.IDataFeed;
@@ -20,40 +19,6 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 
 	public IBDataFeed() {
 		connect();
-	}
-
-	@Override
-	public void connected() {
-	}
-
-	@Override
-	public void disconnected() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void accountList(ArrayList<String> list) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void error(Exception e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void message(int id, int errorCode, String errorMsg) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void show(String string) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -74,7 +39,8 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 
 		// TODO add a check to send a request only if the security is not yet
 		// controlled
-		apiController.reqDeepMktData(contract, 5, resultHandler);
+		// apiController.reqDeepMktData(contract, 5, resultHandler);
+		HFTOrderController.getInstance().controller().reqDeepMktData(contract, 5, resultHandler);
 	}
 
 	private class BookResult implements IDeepMktDataHandler {

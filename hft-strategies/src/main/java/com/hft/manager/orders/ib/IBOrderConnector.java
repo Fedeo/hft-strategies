@@ -13,6 +13,7 @@ import com.hft.adapter.ib.controller.NewContract;
 import com.hft.adapter.ib.controller.NewOrder;
 import com.hft.adapter.ib.controller.NewOrderState;
 import com.hft.adapter.ib.controller.OrderStatus;
+import com.hft.connector.ib.HFTOrderController;
 import com.hft.connector.ib.IBConnection;
 import com.hft.connector.orders.IOrderConnector;
 import com.hft.data.HftOrder;
@@ -25,9 +26,10 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 	static Logger logger = Logger.getLogger(IBOrderConnector.class.getName());
 
 	public IBOrderConnector(String accountId) {
-		super.connect();
+		// super.connect();
 		this.accountId = accountId;
-		apiController.reqLiveOrders(new OrdersModel());
+		// apiController.reqLiveOrders(new OrdersModel());
+		HFTOrderController.getInstance().controller().reqLiveOrders(new OrdersModel());
 	}
 
 	@Override
@@ -52,14 +54,18 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 		order.m_referencePriceType = 0;
 
 		placeOrder(new NewContract(c), new NewOrder(order));
+
 	}
 
 	private void placeOrder(NewContract contract, NewOrder order) {
 
-		apiController.placeOrModifyOrder(contract, order, new IOrderHandler() {
+		// apiController.placeOrModifyOrder(contract, order, new IOrderHandler()
+		// {
+		HFTOrderController.getInstance().controller().placeOrModifyOrder(contract, order, new IOrderHandler() {
 			@Override
 			public void orderState(NewOrderState orderState) {
-				apiController.removeOrderHandler(this);
+				// apiController.removeOrderHandler(this);
+				HFTOrderController.getInstance().controller().removeOrderHandler(this);
 			}
 
 			@Override
@@ -129,13 +135,11 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 			 * Hft Code
 			 */
 
-			if (status == OrderStatus.Filled) {
-				if (filled == 0) {
-					OrderManager.setOrderAcknowledged(orderId);
-				} else {
-					OrderManager.setOrderFilled(orderId);
-				}
-			}
+			if ((status == OrderStatus.Submitted || status == OrderStatus.Filled) && filled == 0)
+				OrderManager.setOrderAcknowledged(orderId);
+
+			if (status == OrderStatus.Filled && filled > 0)
+				OrderManager.setOrderAcknowledged(orderId);
 
 			OrderRow full = m_map.get(permId);
 			if (full != null) {
