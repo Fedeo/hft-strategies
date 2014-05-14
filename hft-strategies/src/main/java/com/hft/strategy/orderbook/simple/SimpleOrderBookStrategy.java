@@ -55,30 +55,29 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 		BookItem bestAsk;
 
 		try {
-			currentSpread = OrderBookController.spreadBidAsk(orderBookKey);
+			currentSpread = OrderBookController.spreadAskBid(orderBookKey);
 			bestBid = OrderBookController.getBestBid(orderBookKey);
 			bestAsk = OrderBookController.getBestAsk(orderBookKey);
 
 			// TODO: Fake Entry for testing: to be removed
 			counter++;
 			if ((counter % 10) == 0) {
-				entryCondition = true;
+				// entryCondition = true;
 			}
 
 			// TODO: Real Entry -> to add and remove the fake one
-			/*
-			 * if (OrderBookController.spreadBidAsk(orderBookKey) >
-			 * spreadApplied){ entryCondition=true;
-			 * logger.debug("SimpleOrderBookStrategy current spread:" +
-			 * currentSpread); }
-			 */
+
+			if (currentSpread > spreadApplied) {
+				entryCondition = true;
+				logger.debug("SimpleOrderBookStrategy current spread:" + currentSpread);
+			}
 
 			if (entryCondition && !isInMarket(this)) {
 				logger.info("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:"
 						+ currentSpread + " bid:" + bestBid.price + " ask:" + bestAsk.price);
 
 				// TODO: Understand Rounding based on ticksize
-				HftOrder entryOrder = createBuyLimitOrder(security, bestBid.price + security.getTick(), 200);
+				HftOrder entryOrder = createBuyLimitOrder(security, bestBid.price + security.getTick(), 200,"SOB-LE");
 				submitOrder(entryOrder);
 				sellReferencePrice = bestAsk.price - security.getTick();
 				stopLossReferencePrice = currentSpread / 2;
@@ -95,14 +94,14 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	@Override
 	public void onOrderChange(int OrderId) {
 		logger.info("Change of Order for SimpleOrderBookStrategy orderId:" + OrderId + "- notified");
-		HftOrder profitTargetOrder = createSellLimitOrder(security, sellReferencePrice, 200);
-		HftOrder stopLossOrder = createSellLimitOrder(security, stopLossReferencePrice, 200);
+		HftOrder profitTargetOrder = createSellLimitOrder(security, sellReferencePrice, 200,"SOB-PT");
+		HftOrder stopLossOrder = createSellLimitOrder(security, stopLossReferencePrice, 200,"SOB-SL");
 
-		List<HftOrder> orders = new ArrayList<HftOrder>();
-		orders.add(profitTargetOrder);
-		orders.add(stopLossOrder);
+		List<HftOrder> pendingOrders = new ArrayList<HftOrder>();
+		pendingOrders.add(profitTargetOrder);
+		pendingOrders.add(stopLossOrder);
 
-		Boolean exitOrdersHaveBeenSubmitted = true; // To implement
+		Boolean exitOrdersHaveBeenSubmitted = ordersHaveBeenSubmitted(this,pendingOrders); // To implement
 		if (isInMarket(this) && !exitOrdersHaveBeenSubmitted) {
 			submitOrder(profitTargetOrder); // Profit Target - OCA
 			submitOrder(stopLossOrder); // Stop Loss - OCA

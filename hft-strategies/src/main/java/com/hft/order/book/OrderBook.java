@@ -26,9 +26,9 @@ public class OrderBook {
 		bid.add(position, bookItem);
 	}
 
-	public Double spreadBidAsk() throws SpreadNotAvailableException {
+	public Double spreadAskBid() throws SpreadNotAvailableException {
 		try {
-			return bid.get(0).price - ask.get(0).price;
+			return  ask.get(0).price - bid.get(0).price;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SpreadNotAvailableException();

@@ -10,10 +10,10 @@ import com.hft.order.book.exceptions.SpreadNotAvailableException;
 
 public class OrderBookTest {
 	
-	BookItem bookAsk1 = new  BookItem(10,new Double(12.1));
-	BookItem bookAsk2 = new  BookItem(5,new Double(12.08));
-	BookItem bookBid1 = new  BookItem(10,new Double(12.25));
-	BookItem bookBid2 = new  BookItem(8,new Double(12.27));
+	BookItem bookAsk2 = new  BookItem(10,new Double(10.13));
+	BookItem bookAsk1 = new  BookItem(5,new Double(10.12));
+	BookItem bookBid1 = new  BookItem(10,new Double(10.09));
+	BookItem bookBid2 = new  BookItem(8,new Double(10.07));
 	
 	ArrayList<BookItem> bid = new ArrayList<BookItem>();
 	ArrayList<BookItem> ask = new ArrayList<BookItem>();
@@ -68,8 +68,9 @@ public class OrderBookTest {
 		
 		OrderBook book=new OrderBook();
 		book.update(bid, ask);
-		Double price = bookBid1.price-bookAsk1.price;
-		assertEquals(book.spreadBidAsk(),price);
+		Double price = bookAsk1.price - bookBid1.price;
+		assertEquals(book.spreadAskBid(),price);
+		assertTrue(book.spreadAskBid()>0);
 	}
 	
 	@Test(expected=SpreadNotAvailableException.class)
@@ -77,7 +78,7 @@ public class OrderBookTest {
 		OrderBook book=new OrderBook();
 		book.update(bid, ask);
 		Double price = bookBid1.price-bookAsk1.price;
-		assertEquals(book.spreadBidAsk(),price);
+		assertEquals(book.spreadAskBid(),price);
 	}
 
 }

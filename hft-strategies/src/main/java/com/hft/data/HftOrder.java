@@ -12,9 +12,11 @@ public class HftOrder {
 	public int qty;
 	public Double lmtPrice;
 	public String status;
+	public String description;
 	public Date timeStamp;
 
-	public HftOrder(int orderId, IHftSecurity security,String action, String orderType, int qty, Double lmtPrice) {
+	public HftOrder(int orderId, IHftSecurity security, String action, String orderType, int qty, Double lmtPrice,
+			String description) {
 		super();
 		this.orderId = orderId;
 		this.security = security;
@@ -23,6 +25,7 @@ public class HftOrder {
 		this.qty = qty;
 		this.lmtPrice = lmtPrice;
 		this.status = Constant.ORDER_NEW;
+		this.description = description;
 		timeStamp = new Date(System.currentTimeMillis());
 	}
 
@@ -37,11 +40,11 @@ public class HftOrder {
 	public Boolean isAcknowleged() {
 		return status.compareToIgnoreCase(Constant.ORDER_ACKNOWLEDGED) == 0 ? new Boolean(true) : new Boolean(false);
 	}
-	
+
 	public Boolean isFilled() {
 		return status.compareToIgnoreCase(Constant.ORDER_FILLED) == 0 ? new Boolean(true) : new Boolean(false);
 	}
-	
+
 	public Boolean isNew() {
 		return status.compareToIgnoreCase(Constant.ORDER_NEW) == 0 ? new Boolean(true) : new Boolean(false);
 	}
@@ -84,6 +87,11 @@ public class HftOrder {
 				return false;
 		} else if (!lmtPrice.equals(other.lmtPrice))
 			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
 		if (qty != other.qty)
 			return false;
 		if (security == null) {
@@ -93,7 +101,5 @@ public class HftOrder {
 			return false;
 		return true;
 	}
-	
-	
 
 }

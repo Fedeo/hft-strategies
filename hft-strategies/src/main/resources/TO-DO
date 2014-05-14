@@ -11,3 +11,5 @@
 	- StrategyHandler 
 	- BookController
 	- SimpleOrderBookStrategy
+8) move StrategiesHandler to a Singleton
+9) add tests on new label for Work Orders

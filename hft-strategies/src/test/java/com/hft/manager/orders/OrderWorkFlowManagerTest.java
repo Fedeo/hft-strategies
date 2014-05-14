@@ -6,16 +6,28 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.hft.connector.orders.IOrderConnector;
 import com.hft.data.HftCurrencyPair;
 import com.hft.data.HftOrder;
 import com.hft.data.IHftSecurity;
+import com.hft.data.feed.IDataFeed;
 import com.hft.run.Constant;
+import com.hft.run.HFT;
+import com.hft.strategy.StrategiesHandler;
 import com.hft.strategy.orderbook.simple.SimpleOrderBookStrategy;
 
 public class OrderWorkFlowManagerTest {
 
 	@Test
 	public void testAddOneOrder() {
+		
+		//Clean Everything
+		OrderWorkFlowManager.getInstance().clearOrdersForAllStrategies();
+		StrategiesHandler.cleanStrategies();
+		
+		// Initialize feed and orders
+		HFT.setDataFeed(new TestDataFeed());
+		HFT.setOrderConnector(new TestOrderConnector());
 
 		// Securities
 		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
@@ -24,7 +36,7 @@ public class OrderWorkFlowManagerTest {
 		SimpleOrderBookStrategy simpleStrategy = new SimpleOrderBookStrategy(new Double(1.0), eurUsd);
 
 		// Orders
-		HftOrder order1 = new HftOrder(10, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 100, 121.0);
+		HftOrder order1 = new HftOrder(10, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 100, 121.0,"SOB-LE");
 		OrderWorkFlowManager.getInstance().addOrder(simpleStrategy, order1);
 
 		List<HftOrder> orders = OrderWorkFlowManager.getInstance().getOrders(simpleStrategy.hashCode());
@@ -54,8 +66,8 @@ public class OrderWorkFlowManagerTest {
 		OrderWorkFlowManager.getInstance().clearOrdersForStrategy(simpleStrategy.hashCode());
 
 		// Orders
-		HftOrder order1 = new HftOrder(10, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 100, 121.0);
-		HftOrder order2 = new HftOrder(11, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 100, 122.0);
+		HftOrder order1 = new HftOrder(10, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 100, 121.0,"SOB-LE");
+		HftOrder order2 = new HftOrder(11, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 100, 122.0,"SOB-LE");
 		OrderWorkFlowManager.getInstance().addOrder(simpleStrategy, order1);
 		OrderWorkFlowManager.getInstance().addOrder(simpleStrategy, order2);
 
@@ -87,8 +99,8 @@ public class OrderWorkFlowManagerTest {
 		SimpleOrderBookStrategy simpleStrategy2 = new SimpleOrderBookStrategy(new Double(1.0), eurJpy);
 
 		// Orders
-		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
-		HftOrder order2 = new HftOrder(21, eurJpy, Constant.ACTION_SELL, Constant.ORDER_MKT, 100, 129.0);
+		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0,"SOB-LE");
+		HftOrder order2 = new HftOrder(21, eurJpy, Constant.ACTION_SELL, Constant.ORDER_MKT, 100, 129.0,"SOB-LE");
 		OrderWorkFlowManager.getInstance().addOrder(simpleStrategy1, order1);
 		OrderWorkFlowManager.getInstance().addOrder(simpleStrategy2, order2);
 
@@ -156,4 +168,47 @@ public class OrderWorkFlowManagerTest {
 		Assert.assertNull(ordersStrategy2);
 	}
 
+	private class TestDataFeed implements IDataFeed {
+
+		@Override
+		public void connect() {
+
+		}
+
+		@Override
+		public void disconnect() {
+
+		}
+
+		@Override
+		public void requestMktData(IHftSecurity security) {
+
+		}
+
+		@Override
+		public void requestDeepMktData(IHftSecurity security) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+	}
+
+	private class TestOrderConnector implements IOrderConnector {
+		
+		int lastOrderId;
+		
+		@Override
+		public void sendOrder(HftOrder newOrder) {
+		}
+
+		public void onOrder() {
+		}
+
+		public void onBookChanged() {
+
+		}
+
+	}
+	
 }

@@ -139,7 +139,7 @@ public class IBOrderConnector extends IBConnection implements IOrderConnector {
 				OrderManager.setOrderAcknowledged(orderId);
 
 			if (status == OrderStatus.Filled && filled > 0)
-				OrderManager.setOrderAcknowledged(orderId);
+				OrderManager.setOrderFilled(orderId);
 
 			OrderRow full = m_map.get(permId);
 			if (full != null) {

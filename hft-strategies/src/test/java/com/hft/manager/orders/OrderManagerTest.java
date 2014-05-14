@@ -19,7 +19,7 @@ public class OrderManagerTest {
 
 		// Orders
 		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
-		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
+		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0,"SOB-LE");
 		List<HftOrder> ordersPlaced = new ArrayList<HftOrder>();
 		ordersPlaced.add(order1);
 
@@ -32,13 +32,13 @@ public class OrderManagerTest {
 
 		// Orders
 		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
-		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
-		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0);
+		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0,"SOB-LE");
+		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0,"SOB-LE");
 		List<HftOrder> ordersPlaced = new ArrayList<HftOrder>();
 		ordersPlaced.add(order1);
 		ordersPlaced.add(order2);
 		
-		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
+		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0,"SOB-LE");
 		List<HftOrder> ordersPending = new ArrayList<HftOrder>();
 		ordersPending.add(order3);
 
@@ -52,16 +52,16 @@ public class OrderManagerTest {
 
 		// Orders
 		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
-		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
-		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0);
-		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0);
+		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0,"SOB-LE");
+		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0,"SOB-LE");
+		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0,"SOB-LE");
 		List<HftOrder> ordersPlaced = new ArrayList<HftOrder>();
 		ordersPlaced.add(order1);
 		ordersPlaced.add(order2);
 		ordersPlaced.add(order3);
 		
-		HftOrder order4 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
-		HftOrder order5 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0);
+		HftOrder order4 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0,"SOB-LE");
+		HftOrder order5 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0,"SOB-LE");
 		List<HftOrder> ordersPending = new ArrayList<HftOrder>();
 		ordersPending.add(order4);
 		ordersPending.add(order5);
@@ -76,10 +76,10 @@ public class OrderManagerTest {
 
 		// Orders
 		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
-		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
-		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0);
-		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0);
-		HftOrder order4 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 62, 125.0);
+		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0,"SOB-LE");
+		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0,"SOB-LE");
+		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0,"SOB-LE");
+		HftOrder order4 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 62, 125.0,"SOB-LE");
 		List<HftOrder> ordersPlaced = new ArrayList<HftOrder>();
 		ordersPlaced.add(order1);
 		ordersPlaced.add(order2);

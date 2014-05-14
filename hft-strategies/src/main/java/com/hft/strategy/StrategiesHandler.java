@@ -52,6 +52,11 @@ public class StrategiesHandler {
 			strategy.onTopLevelMktDataChange();
 		}
 	}
+	
+	static public void cleanStrategies(){
+		strategies.clear();
+		mapSecuritiesStrategy.clear();
+	}
 
 	static protected void registerSecuritiesForDataFeed(IStrategy strategy) {
 		for (IHftSecurity security : strategy.getAllSecurities()) {

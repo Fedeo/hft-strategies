@@ -11,7 +11,7 @@ public class Sequence {
 	protected static AtomicLong ordercounter = new AtomicLong(MIN + (int) (Math.random() * ((MAX - MIN) + 1)));
 
 	protected Sequence() {
-		System.out.println(ordercounter);
+		//System.out.println(ordercounter);
 	}
 
 	public static Sequence getInstance() {
