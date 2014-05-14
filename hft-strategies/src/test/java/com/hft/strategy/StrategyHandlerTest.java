@@ -16,7 +16,7 @@ public class StrategyHandlerTest {
 	@Test
 	public void testAddAndGetStrategy() {
 		// Strategy
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 		IStrategy dummyStrategy = new DummyStrategy(eurUsd);
 
 		// Register the Strategy
@@ -31,7 +31,7 @@ public class StrategyHandlerTest {
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void tesInitialize() {
 		// Strategy
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 		IStrategy dummyStrategy = new DummyStrategy(eurUsd);
 
 		// Register the Strategy
@@ -45,7 +45,7 @@ public class StrategyHandlerTest {
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testNotifyStrategiesForBookChange() {
 		// Strategy
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 		IStrategy dummyStrategy = new DummyStrategy(eurUsd);
 
 		// Register the Strategy
@@ -59,7 +59,7 @@ public class StrategyHandlerTest {
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testNotifyStrategiesForTopLevelMktDataChange() {
 		// Strategy
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 		IStrategy dummyStrategy = new DummyStrategy(eurUsd);
 
 		// Register the Strategy

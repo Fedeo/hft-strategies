@@ -18,7 +18,7 @@ public class OrderWorkFlowManagerTest {
 	public void testAddOneOrder() {
 
 		// Securities
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 
 		// Strategy
 		SimpleOrderBookStrategy simpleStrategy = new SimpleOrderBookStrategy(new Double(1.0), eurUsd);
@@ -45,7 +45,7 @@ public class OrderWorkFlowManagerTest {
 	public void testAddTwoOrdersSameStrategy() {
 
 		// Securities
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 
 		// Strategy
 		SimpleOrderBookStrategy simpleStrategy = new SimpleOrderBookStrategy(new Double(1.0), eurUsd);
@@ -79,8 +79,8 @@ public class OrderWorkFlowManagerTest {
 	public void testAddTwoOrdersForDifferentStrategies() {
 
 		// Securities
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
-		IHftSecurity eurJpy = new HftCurrencyPair("EUR", "IDEALPRO", "JPY", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
+		IHftSecurity eurJpy = new HftCurrencyPair("EUR", "IDEALPRO", "JPY", "CASH",new Double(0.01));
 
 		// Strategy
 		SimpleOrderBookStrategy simpleStrategy1 = new SimpleOrderBookStrategy(new Double(1.0), eurUsd);
@@ -141,8 +141,8 @@ public class OrderWorkFlowManagerTest {
 		OrderWorkFlowManager.getInstance().clearOrdersForAllStrategies();
 
 		// Securities
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
-		IHftSecurity eurJpy = new HftCurrencyPair("EUR", "IDEALPRO", "JPY", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
+		IHftSecurity eurJpy = new HftCurrencyPair("EUR", "IDEALPRO", "JPY", "CASH",new Double(0.01));
 
 		// Strategies
 		SimpleOrderBookStrategy simpleStrategy1 = new SimpleOrderBookStrategy(new Double(1.0), eurUsd);

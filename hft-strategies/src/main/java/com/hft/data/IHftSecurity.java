@@ -18,6 +18,10 @@ public interface IHftSecurity {
 
 	public abstract String getSymbol();
 	
+	public abstract Double getTick();
+	
+	public abstract void setTick(Double tick);
+	
 	public abstract int hashCode();
 
 	public abstract boolean equals(Object obj);

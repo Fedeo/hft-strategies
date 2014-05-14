@@ -13,12 +13,12 @@ import com.hft.data.IHftSecurity;
 import com.hft.run.Constant;
 
 public class OrderManagerTest {
-
+	
 	@Test
 	public void testOneOrder() {
 
 		// Orders
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
 		List<HftOrder> ordersPlaced = new ArrayList<HftOrder>();
 		ordersPlaced.add(order1);
@@ -31,7 +31,7 @@ public class OrderManagerTest {
 	public void testTwoBuyOrders() {
 
 		// Orders
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
 		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0);
 		List<HftOrder> ordersPlaced = new ArrayList<HftOrder>();
@@ -46,7 +46,7 @@ public class OrderManagerTest {
 	public void testTwoBuyOneSellOrders() {
 
 		// Orders
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
 		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0);
 		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0);
@@ -63,7 +63,7 @@ public class OrderManagerTest {
 	public void testTwoBuyTwoSellOrders() {
 
 		// Orders
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
 		HftOrder order1 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
 		HftOrder order2 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0);
 		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 32, 125.0);

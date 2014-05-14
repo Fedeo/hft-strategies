@@ -43,8 +43,8 @@ public class HFT {
 		orderConnector = new IBOrderConnector("DU153566");
 
 		// Initialize Strategies
-		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH");
-		IHftSecurity usdJpy = new HftCurrencyPair("USD", "IDEALPRO", "JPY", "CASH");
+		IHftSecurity eurUsd = new HftCurrencyPair("EUR", "IDEALPRO", "USD", "CASH",new Double(0.0001));
+		IHftSecurity usdJpy = new HftCurrencyPair("USD", "IDEALPRO", "JPY", "CASH",new Double(0.01));
 
 		// Initialize Strategies
 		SimpleOrderBookStrategy simpleOrderBookStratEurUsd = new SimpleOrderBookStrategy(0.001, eurUsd);

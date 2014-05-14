@@ -6,13 +6,15 @@ public class HftCurrencyPair implements IHftSecurity {
 	protected String exchange;
 	protected String currency;
 	protected String secType;
+	protected Double tick;
 	
-	public HftCurrencyPair(String symbol, String exchange, String currency, String secType) {
+	public HftCurrencyPair(String symbol, String exchange, String currency, String secType,Double tick) {
 		super();
 		this.symbol = symbol;
 		this.exchange = exchange;
 		this.currency = currency;
 		this.secType = secType;
+		this.tick = tick;
 	}
 	
 	@Override
@@ -53,6 +55,16 @@ public class HftCurrencyPair implements IHftSecurity {
 	@Override
 	public void setSecType(String secType) {
 		this.secType = secType;
+	}
+	
+	@Override
+	public Double getTick() {
+		return tick;
+	}
+	
+	@Override
+	public void setTick(Double tick) {
+		this.tick = tick;
 	}
 
 	@Override
