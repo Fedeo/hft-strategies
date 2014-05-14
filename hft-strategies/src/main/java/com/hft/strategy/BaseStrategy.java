@@ -1,5 +1,7 @@
 package com.hft.strategy;
 
+import java.util.List;
+
 import com.hft.data.HftOrder;
 import com.hft.data.IHftSecurity;
 import com.hft.manager.orders.OrderManager;
@@ -9,27 +11,13 @@ import com.hft.run.HFT;
 
 public abstract class BaseStrategy {
 
-	// Sell and Buy methods
-
-	protected void buyMarket(IHftSecurity security, int qty) {
-		submitGenericBuy(security, Constant.ORDER_MKT, new Double(0.0), qty);
-	}
-
-	protected void sellMarket(IHftSecurity security, int qty) {
-		submitGenericSell(security, Constant.ORDER_MKT, new Double(0.0), qty);
-	}
-
-	protected void buyLimit(IHftSecurity security, Double lmtPrice, int qty) {
-		submitGenericBuy(security, Constant.ORDER_LMT, new Double(0.0), qty);
-	}
-
-	protected void sellLimit(IHftSecurity security, Double lmtPrice, int qty) {
-		submitGenericSell(security, Constant.ORDER_LMT, new Double(0.0), qty);
-	}
-
 	// Market Positions Methods
 	protected Boolean isInMarket(IStrategy strategy) {
 		return OrderManager.isInMarket(strategy);
+	}
+
+	protected Boolean ordersHaveBeenSubmitted(IStrategy strategy, List<HftOrder> pendingOrders) {
+		return OrderManager.ordersExist(strategy, pendingOrders);
 	}
 
 	protected Boolean isLong(int strategyKey) {
@@ -40,19 +28,39 @@ public abstract class BaseStrategy {
 		return null;
 	}
 
-	// Accessories Methods
+	// Methods for creating Orders
 
-	private void submitGenericBuy(IHftSecurity security, String orderType, Double lmtPrice, int qty) {
-		submitGenericOrder(security, Constant.ACTION_BUY, orderType, lmtPrice, qty);
+	protected HftOrder createBuyMarketOrder(IHftSecurity security, int qty) {
+		return createGenericBuyOrder(security, Constant.ORDER_MKT, new Double(0.0), qty);
 	}
 
-	private void submitGenericSell(IHftSecurity security, String orderType, Double lmtPrice, int qty) {
-		submitGenericOrder(security, Constant.ACTION_SELL, orderType, lmtPrice, qty);
+	protected HftOrder createSellMarketOrder(IHftSecurity security, int qty) {
+		return createGenericBuyOrder(security, Constant.ORDER_MKT, new Double(0.0), qty);
 	}
 
-	private void submitGenericOrder(IHftSecurity security, String action, String orderType, Double lmtPrice, int qty) {
-		HftOrder newOrder = new HftOrder(Sequence.getInstance().getAndIncreaseOrderId(), security, action, orderType,
-				qty, lmtPrice);
+	protected HftOrder createBuyLimitOrder(IHftSecurity security, Double lmtPrice, int qty) {
+		return createGenericBuyOrder(security, Constant.ORDER_LMT, new Double(0.0), qty);
+	}
+
+	protected HftOrder createSellLimitOrder(IHftSecurity security, Double lmtPrice, int qty) {
+		return createGenericSellOrder(security, Constant.ORDER_LMT, new Double(0.0), qty);
+	}
+
+	// Accessories Methods for creating Order
+
+	private HftOrder createGenericBuyOrder(IHftSecurity security, String orderType, Double lmtPrice, int qty) {
+		return createGenericOrder(security, Constant.ACTION_BUY, orderType, lmtPrice, qty);
+	}
+
+	private HftOrder createGenericSellOrder(IHftSecurity security, String orderType, Double lmtPrice, int qty) {
+		return createGenericOrder(security, Constant.ACTION_SELL, orderType, lmtPrice, qty);
+	}
+
+	private HftOrder createGenericOrder(IHftSecurity security, String action, String orderType, Double lmtPrice, int qty) {
+		return new HftOrder(Sequence.getInstance().getAndIncreaseOrderId(), security, action, orderType, qty, lmtPrice);
+	}
+
+	protected void submitOrder(HftOrder newOrder) {
 		HFT.orderConnector().sendOrder(newOrder);
 		OrderManager.addOrder(newOrder, getStrategy());
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.hft.data.HftOrder;
 import com.hft.data.IHftSecurity;
 import com.hft.order.book.BookItem;
 import com.hft.order.book.OrderBookController;
@@ -21,6 +22,8 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	private final IHftSecurity security;
 	private final int orderBookKey;
 	private final static String STRATEGY_NAME = "SimpleOrderBookStrategy";
+	protected Double sellReferencePrice;
+	protected Double stopLossReferencePrice;
 
 	static Logger logger = Logger.getLogger(SimpleOrderBookStrategy.class.getName());
 
@@ -49,25 +52,37 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 		Boolean entryCondition = (counter == 10);
 		Double currentSpread;
 		BookItem bestBid;
+		BookItem bestAsk;
 
 		try {
 			currentSpread = OrderBookController.spreadBidAsk(orderBookKey);
-			bestBid = OrderBookController.getBestAsk(orderBookKey);
+			bestBid = OrderBookController.getBestBid(orderBookKey);
+			bestAsk = OrderBookController.getBestAsk(orderBookKey);
+
+			// TODO: Fake Entry for testing: to be removed
 			counter++;
-			if ((counter % 10)==0){
-				System.out.println("dovrebbe entrare");
-				entryCondition=true;
+			if ((counter % 10) == 0) {
+				entryCondition = true;
 			}
-			logger.debug("SimpleOrderBookStrategy current spread:" + currentSpread);
-			// OrderBookController.spreadBidAsk(orderBookKey) > spreadApplied;
+
+			// TODO: Real Entry -> to add and remove the fake one
+			/*
+			 * if (OrderBookController.spreadBidAsk(orderBookKey) >
+			 * spreadApplied){ entryCondition=true;
+			 * logger.debug("SimpleOrderBookStrategy current spread:" +
+			 * currentSpread); }
+			 */
+
 			if (entryCondition && !isInMarket(this)) {
 				logger.info("Send Order for SimpleOrderBookStrategy " + security.getSymbol() + "- Spread:"
-						+ currentSpread);
-				System.out.println("bestBid:" + OrderBookController.getBestBid(orderBookKey).price);
-				System.out.println("bestAsk:" + OrderBookController.getBestAsk(orderBookKey).price);
-				System.out.println("lmtprice:" + bestBid.price);
-				// buyLimit(security, bestBid.price, 200);
-				buyMarket(security, 200);
+						+ currentSpread + " bid:" + bestBid.price + " ask:" + bestAsk.price);
+
+				// TODO: Understand Rounding based on ticksize
+				HftOrder entryOrder = createBuyLimitOrder(security, bestBid.price + security.getTick(), 200);
+				submitOrder(entryOrder);
+				sellReferencePrice = bestAsk.price - security.getTick();
+				stopLossReferencePrice = currentSpread / 2;
+				// buyMarket(security, 200);
 			}
 		} catch (SpreadNotAvailableException e) {
 			logger.debug("Book not yet completed to calculate the spread");
@@ -80,9 +95,18 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	@Override
 	public void onOrderChange(int OrderId) {
 		logger.info("Change of Order for SimpleOrderBookStrategy orderId:" + OrderId + "- notified");
-		// if Order has been submitted then place as OCA
-		// HFT.orderManager().sendOrder(); // 1) order for the Profit Target
-		// HFT.orderManager().sendOrder(); // 2) order for the Stop Loss
+		HftOrder profitTargetOrder = createSellLimitOrder(security, sellReferencePrice, 200);
+		HftOrder stopLossOrder = createSellLimitOrder(security, stopLossReferencePrice, 200);
+
+		List<HftOrder> orders = new ArrayList<HftOrder>();
+		orders.add(profitTargetOrder);
+		orders.add(stopLossOrder);
+
+		Boolean exitOrdersHaveBeenSubmitted = true; // To implement
+		if (isInMarket(this) && !exitOrdersHaveBeenSubmitted) {
+			submitOrder(profitTargetOrder); // Profit Target - OCA
+			submitOrder(stopLossOrder); // Stop Loss - OCA
+		}
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class OrderManagerTest {
 		ordersPlaced.add(order1);
 
 		Assert.assertEquals(OrderManager.getQuantityOnMarket(ordersPlaced), new Long(120));
-
+		Assert.assertTrue(OrderManager.ordersExist(ordersPlaced, ordersPlaced));
 	}
 
 	@Test
@@ -37,8 +37,13 @@ public class OrderManagerTest {
 		List<HftOrder> ordersPlaced = new ArrayList<HftOrder>();
 		ordersPlaced.add(order1);
 		ordersPlaced.add(order2);
+		
+		HftOrder order3 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
+		List<HftOrder> ordersPending = new ArrayList<HftOrder>();
+		ordersPending.add(order3);
 
 		Assert.assertEquals(OrderManager.getQuantityOnMarket(ordersPlaced), new Long(152));
+		Assert.assertTrue(OrderManager.ordersExist(ordersPlaced, ordersPending));
 
 	}
 	
@@ -54,9 +59,16 @@ public class OrderManagerTest {
 		ordersPlaced.add(order1);
 		ordersPlaced.add(order2);
 		ordersPlaced.add(order3);
+		
+		HftOrder order4 = new HftOrder(20, eurUsd, Constant.ACTION_BUY, Constant.ORDER_MKT, 120, 125.0);
+		HftOrder order5 = new HftOrder(20, eurUsd, Constant.ACTION_SELL, Constant.ORDER_MKT, 90, 125.0);
+		List<HftOrder> ordersPending = new ArrayList<HftOrder>();
+		ordersPending.add(order4);
+		ordersPending.add(order5);
 
 		Assert.assertEquals(OrderManager.getQuantityOnMarket(ordersPlaced), new Long(62));
-
+		Assert.assertTrue(OrderManager.ordersExist(ordersPlaced, ordersPending));
+		
 	}
 	
 	@Test
@@ -73,8 +85,11 @@ public class OrderManagerTest {
 		ordersPlaced.add(order2);
 		ordersPlaced.add(order3);
 		ordersPlaced.add(order4);
+		
+		List<HftOrder> ordersPending = new ArrayList<HftOrder>();
 
 		Assert.assertEquals(OrderManager.getQuantityOnMarket(ordersPlaced), new Long(0));
+		Assert.assertFalse(OrderManager.ordersExist(ordersPlaced, ordersPending));
 
 	}
 }
