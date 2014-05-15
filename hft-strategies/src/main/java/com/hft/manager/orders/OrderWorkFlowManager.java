@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.commons.collections.MultiHashMap;
+import org.apache.log4j.Logger;
 
 import com.hft.data.HftOrder;
 import com.hft.strategy.IStrategy;
@@ -14,6 +15,8 @@ public class OrderWorkFlowManager {
 	private static OrderWorkFlowManager instance = null;
 	static protected MultiHashMap mapStrategyOrders = new MultiHashMap();
 	static protected HashMap<Integer, IStrategy> mapOrderStrategy = new HashMap<Integer, IStrategy>();
+	
+	static Logger logger = Logger.getLogger(OrderWorkFlowManager.class.getName());
 
 	protected OrderWorkFlowManager() {
 	}

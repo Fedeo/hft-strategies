@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.hft.order.book.exceptions.BookItemNotAvailableException;
 import com.hft.order.book.exceptions.SpreadNotAvailableException;
+import com.hft.util.MathUtil;
 
 public class OrderBook {
 
@@ -26,9 +27,10 @@ public class OrderBook {
 		bid.add(position, bookItem);
 	}
 
-	public Double spreadAskBid() throws SpreadNotAvailableException {
+	//TODO: Change digit-this is good only for currency
+	public Double spreadBidAsk() throws SpreadNotAvailableException {
 		try {
-			return  ask.get(0).price - bid.get(0).price;
+			return  MathUtil.round(ask.get(0).price - bid.get(0).price, 4);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SpreadNotAvailableException();

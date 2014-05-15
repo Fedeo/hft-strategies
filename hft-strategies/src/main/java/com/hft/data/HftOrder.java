@@ -102,4 +102,13 @@ public class HftOrder {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "HftOrder [orderId=" + orderId + ", security=" + security + ", action=" + action + ", orderType="
+				+ orderType + ", qty=" + qty + ", lmtPrice=" + lmtPrice + ", status=" + status + ", description="
+				+ description + ", timeStamp=" + timeStamp + "]";
+	}
+	
+	
+
 }

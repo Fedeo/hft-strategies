@@ -49,13 +49,13 @@ public class SimpleOrderBookStrategy extends OrderBookStrategy implements IStrat
 	public void onTopLevelMktDataChange() {
 		logger.debug("Change of TopLevelMktDataChange for SimpleOrderBookStrategy " + security.getSymbol()
 				+ "- notified");
-		Boolean entryCondition = (counter == 10);
+		Boolean entryCondition = false;
 		Double currentSpread;
 		BookItem bestBid;
 		BookItem bestAsk;
 
 		try {
-			currentSpread = OrderBookController.spreadAskBid(orderBookKey);
+			currentSpread = OrderBookController.spreadBidAsk(orderBookKey);
 			bestBid = OrderBookController.getBestBid(orderBookKey);
 			bestAsk = OrderBookController.getBestAsk(orderBookKey);
 

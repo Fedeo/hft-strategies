@@ -57,7 +57,7 @@ public class HFT {
 		IHftSecurity usdJpy = new HftCurrencyPair("USD", "IDEALPRO", "JPY", "CASH", new Double(0.01));
 
 		// Initialize Strategies
-		SimpleOrderBookStrategy simpleOrderBookStratEurUsd = new SimpleOrderBookStrategy(0.001, eurUsd);
+		SimpleOrderBookStrategy simpleOrderBookStratEurUsd = new SimpleOrderBookStrategy(0.1, eurUsd);
 		SimpleOrderBookStrategy simpleOrderBookStraUsdJpy = new SimpleOrderBookStrategy(200.0, usdJpy);
 
 		StrategiesHandler.addStrategy(simpleOrderBookStratEurUsd);

@@ -1,14 +1,14 @@
 package com.hft.data;
 
 public class HftCurrencyPair implements IHftSecurity {
-	
+
 	protected String symbol;
 	protected String exchange;
 	protected String currency;
 	protected String secType;
 	protected Double tick;
-	
-	public HftCurrencyPair(String symbol, String exchange, String currency, String secType,Double tick) {
+
+	public HftCurrencyPair(String symbol, String exchange, String currency, String secType, Double tick) {
 		super();
 		this.symbol = symbol;
 		this.exchange = exchange;
@@ -16,7 +16,7 @@ public class HftCurrencyPair implements IHftSecurity {
 		this.secType = secType;
 		this.tick = tick;
 	}
-	
+
 	@Override
 	public String getSymbol() {
 		return symbol;
@@ -56,12 +56,12 @@ public class HftCurrencyPair implements IHftSecurity {
 	public void setSecType(String secType) {
 		this.secType = secType;
 	}
-	
+
 	@Override
 	public Double getTick() {
 		return tick;
 	}
-	
+
 	@Override
 	public void setTick(Double tick) {
 		this.tick = tick;
@@ -110,9 +110,10 @@ public class HftCurrencyPair implements IHftSecurity {
 		return true;
 	}
 
-
-	
-	
-	
+	@Override
+	public String toString() {
+		return "HftCurrencyPair [symbol=" + symbol + ", exchange=" + exchange + ", currency=" + currency + ", secType="
+				+ secType + "]";
+	}
 
 }

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.hft.order.book.exceptions.BookItemNotAvailableException;
 import com.hft.order.book.exceptions.SpreadNotAvailableException;
+import com.hft.util.MathUtil;
 
 public class OrderBookTest {
 	
@@ -68,9 +69,9 @@ public class OrderBookTest {
 		
 		OrderBook book=new OrderBook();
 		book.update(bid, ask);
-		Double price = bookAsk1.price - bookBid1.price;
-		assertEquals(book.spreadAskBid(),price);
-		assertTrue(book.spreadAskBid()>0);
+		Double price = MathUtil.round(bookAsk1.price - bookBid1.price, 4);
+		assertEquals(book.spreadBidAsk(),price);
+		assertTrue(book.spreadBidAsk()>0);
 	}
 	
 	@Test(expected=SpreadNotAvailableException.class)
@@ -78,7 +79,7 @@ public class OrderBookTest {
 		OrderBook book=new OrderBook();
 		book.update(bid, ask);
 		Double price = bookBid1.price-bookAsk1.price;
-		assertEquals(book.spreadAskBid(),price);
+		assertEquals(book.spreadBidAsk(),price);
 	}
 
 }

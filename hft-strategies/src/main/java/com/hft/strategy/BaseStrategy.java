@@ -2,6 +2,8 @@ package com.hft.strategy;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.hft.data.HftOrder;
 import com.hft.data.IHftSecurity;
 import com.hft.manager.orders.OrderManager;
@@ -10,6 +12,8 @@ import com.hft.run.Constant;
 import com.hft.run.HFT;
 
 public abstract class BaseStrategy {
+
+	static Logger logger = Logger.getLogger(BaseStrategy.class.getName());
 
 	// Market Positions Methods
 	protected Boolean isInMarket(IStrategy strategy) {
@@ -65,6 +69,7 @@ public abstract class BaseStrategy {
 	}
 
 	protected void submitOrder(HftOrder newOrder) {
+		logger.info("Submitting New Order:" + newOrder.toString());
 		HFT.orderConnector().sendOrder(newOrder);
 		OrderManager.addOrder(newOrder, getStrategy());
 	}

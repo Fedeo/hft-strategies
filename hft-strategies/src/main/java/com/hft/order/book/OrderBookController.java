@@ -21,8 +21,8 @@ public class OrderBookController {
 		notifyStrategies(orderBookKey, position);
 	}
 
-	static public Double spreadAskBid(int orderBookKey) throws SpreadNotAvailableException {
-		return getOrderBook(orderBookKey).spreadAskBid();
+	static public Double spreadBidAsk(int orderBookKey) throws SpreadNotAvailableException {
+		return getOrderBook(orderBookKey).spreadBidAsk();
 	}
 	
 	static public BookItem getBestBid(int orderBookKey) throws BookItemNotAvailableException {

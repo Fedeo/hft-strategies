@@ -60,15 +60,15 @@ public class IBDataFeed extends IBConnection implements IDataFeed {
 			BookItem bookItem = new BookItem(size, price);
 			if (operation == DeepType.INSERT) {
 				if (side == DeepSide.BUY) {
-					OrderBookController.addAsk(orderBookKey, bookItem, position);
-				} else {
 					OrderBookController.addBid(orderBookKey, bookItem, position);
+				} else {
+					OrderBookController.addAsk(orderBookKey, bookItem, position);
 				}
 			} else if (operation == DeepType.UPDATE) {
 				if (side == DeepSide.BUY) {
-					OrderBookController.addAsk(orderBookKey, bookItem, position);
-				} else {
 					OrderBookController.addBid(orderBookKey, bookItem, position);
+				} else {
+					OrderBookController.addAsk(orderBookKey, bookItem, position);
 				}
 			}
 		}
